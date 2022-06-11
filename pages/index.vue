@@ -1,8 +1,9 @@
 <script setup lang="ts">import { Product } from '~~/types/product'
 
 const client = useSupabaseClient()
-const { data: sliderProduct } = await client.from<Product>('Product').select('*')
-console.log(sliderProduct)
+const { data: sliderProduct } = await client.from<Product>('Product').select('*').range(0, 2)
+console.log("🚀 ~ file: index.vue ~ line 5 ~ sliderProduct", sliderProduct)
+
 
 </script>
 <template>

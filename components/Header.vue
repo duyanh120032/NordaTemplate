@@ -6,6 +6,7 @@ const headerRef = ref<HTMLElement | null>(null)
 const onCloseCart = () => {
     isOpenCart.value = false
 }
+const isOpenMobileSidebar = useState('false', () => false);
 
 </script>
 
@@ -77,7 +78,8 @@ const onCloseCart = () => {
                                 <div class="main-menu main-menu-padding-1 main-menu-lh-1">
                                     <nav>
                                         <ul>
-                                            <li><NuxtLink to="/">HOME </NuxtLink>
+                                            <li>
+                                                <NuxtLink to="/">HOME </NuxtLink>
                                                 <ul class="sub-menu-style">
                                                     <li><a href="index.html">Home version 1 </a></li>
                                                     <li><a href="index-2.html">Home version 2</a></li>
@@ -91,7 +93,8 @@ const onCloseCart = () => {
                                                     <li><a href="index-10.html">Home version 10</a></li>
                                                 </ul>
                                             </li>
-                                            <li><NuxtLink to="/shop">SHOP </NuxtLink>
+                                            <li>
+                                                <NuxtLink to="/shop">SHOP </NuxtLink>
                                                 <ul class="mega-menu-style mega-menu-mrg-1">
                                                     <li>
                                                         <ul>
@@ -149,7 +152,7 @@ const onCloseCart = () => {
                                                 <ul class="sub-menu-style">
                                                     <li><a href="about-us.html">about us </a></li>
                                                     <li><a href="cart.html">cart page</a></li>
-                                                    <li><a href="checkout.html">checkout </a></li>
+                                                    <li><NuxtLink to="/cart">checkout </NuxtLink></li>
                                                     <li><a href="my-account.html">my account</a></li>
                                                     <li><a href="wishlist.html">wishlist </a></li>
                                                     <li><a href="compare.html">compare </a></li>
@@ -176,7 +179,6 @@ const onCloseCart = () => {
                                     <div class="same-style-2 header-search-1">
                                         <a class="search-toggle" href="#" @click="isOpenSearch = !isOpenSearch">
                                             <i class="fa-light fa-magnifying-glass"></i>
-
                                         </a>
                                         <div class="search-wrap-1 " :class="`${isOpenSearch ? 'open' : ''}`">
                                             <form action="#">
@@ -186,7 +188,7 @@ const onCloseCart = () => {
                                         </div>
                                     </div>
                                     <div class="same-style-2">
-                                        <a href="login-register.html"><i class="fa-light fa-user"></i></a>
+                                        <NuxtLink to="/signIn"><i class="fa-light fa-user"></i></NuxtLink>
                                     </div>
                                     <div class="same-style-2">
                                         <a href="wishlist.html"><i class="fa-light fa-heart"></i><span
@@ -215,19 +217,22 @@ const onCloseCart = () => {
                         <div class="col-7">
                             <div class="header-action header-action-flex">
                                 <div class="same-style-2">
-                                    <a href="login-register.html"><i class="icon-user"></i></a>
+                                    <NuxtLink to="/signin"><i class="fa-light fa-user"></i></NuxtLink>
                                 </div>
                                 <div class="same-style-2">
-                                    <a href="wishlist.html"><i class="icon-heart"></i><span
+                                    <a href="wishlist.html"><i class="fa-light fa-heart"></i><span
                                             class="pro-count red">03</span></a>
                                 </div>
                                 <div class="same-style-2 header-cart">
-                                    <a class="cart-active" href="#">
-                                        <i class="icon-basket-loaded"></i><span class="pro-count red">02</span>
+                                    <a class="cart-active" href="#" @click="isOpenCart = !isOpenCart">
+                                        <i class="fa-light fa-basket-shopping"></i><span class="pro-count red">02</span>
                                     </a>
                                 </div>
                                 <div class="same-style-2 main-menu-icon">
-                                    <a class="mobile-header-button-active" href="#"><i class="icon-menu"></i> </a>
+                                    <a class="mobile-header-button-active" href="#"
+                                        @click="isOpenMobileSidebar = !isOpenMobileSidebar"><i
+                                            class="fa-light fa-bars"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -236,5 +241,6 @@ const onCloseCart = () => {
             </div>
         </header>
         <MiniCart :is-open="isOpenCart" @close="onCloseCart" />
+        <LayoutsMobileSidebar :isOpened="isOpenMobileSidebar" @close="isOpenMobileSidebar=false" />
     </div>
 </template>

@@ -56,7 +56,8 @@ const handlePrevSlide = () => {
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6">
                             <div class="hero-slider-img-1 slider-animated-1">
-                                <img class="animated" src="assets/images/slider/hm-1-slider-1.png" alt="">
+                                <img class="animated" :src="n.image ? n.image : 'assets/images/slider/hm-1-slider-1.png'"
+                                    alt="">
                             </div>
                         </div>
                     </div>

@@ -54,8 +54,8 @@ onClickOutside(MiniCartRef, () => {
                     <h4>Subtotal: <span>$170.00</span></h4>
                 </div>
                 <div class="cart-checkout-btn">
-                    <a class="btn-hover cart-btn-style" href="cart.html">view cart</a>
-                    <a class="no-mrg btn-hover cart-btn-style" href="checkout.html">checkout</a>
+                    <NuxtLink class="btn-hover cart-btn-style" to="/cart">view cart</NuxtLink>
+                    <NuxtLink class="no-mrg btn-hover cart-btn-style" to="/cart">checkout</NuxtLink>
                 </div>
             </div>
         </div>
