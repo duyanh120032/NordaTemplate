@@ -57,7 +57,7 @@
                                                 </label>
                                                 <select class="email s-email s-wid">
                                                     <option>Bangladesh</option>
-                                                    <option>Albania</option>
+                                                    <Option>Albania</Option>
                                                     <option>Åland Islands</option>
                                                     <option>Afghanistan</option>
                                                     <option>Belgium</option>

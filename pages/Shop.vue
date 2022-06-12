@@ -8,7 +8,7 @@ const { data } = await useAsyncData('products', async () => {
     const { data } = await client.from('Product').select('*').order('id')
     return data
 })
-const {data:Categories} = await useAsyncData('categories', async () => {
+const { data: Categories } = await useAsyncData('categories', async () => {
     const { data } = await client.from('Category').select('*')
     return data
 })
@@ -25,12 +25,13 @@ const totalPages = computed(() => {
 })
 const viewOption = ref(viewOptions[0]);
 const sortBy = ref('');
+const searchKeyword = ref<string>('')
 const ProductData = computed(() => {
     // pagination
     start.value = (currentPage.value - 1) * perPage.value;
     end.value = currentPage.value * perPage.value;
 
-    if(catFilter.value.length > 0){
+    if (catFilter.value.length > 0) {
         return data.value.filter(product => product.category.includes(catFilter.value))
     }
     // sort
@@ -41,6 +42,13 @@ const ProductData = computed(() => {
             return a.price > b.price ? 1 : -1;
         }
     });
+
+    if (searchKeyword.value !== '') {
+        return sortedData.filter(product => {
+            return product.title.toLowerCase().includes(searchKeyword.value.toLowerCase())
+        })
+
+    }
     return sortedData;
 })
 const onNextPage = () => {
@@ -75,7 +83,7 @@ const onChangePage = (n) => {
                                     <span :class="{ active: viewMode === 'tab' }" @click="viewMode = 'tab'"><i
                                             class="fa-light fa-bars"></i></span>
                                 </div>
-                                <p>Showing {{start}} - {{end}} of {{data.length}} results </p>
+                                <p>Showing {{ start }} - {{ end }} of {{ data.length }} results </p>
                             </div>
                             <div class="product-sorting-wrapper">
                                 <div class="product-shorting shorting-style">
@@ -123,7 +131,7 @@ const onChangePage = (n) => {
                                 <h4 class="sidebar-widget-title">Search </h4>
                                 <div class="sidebar-search">
                                     <form class="sidebar-search-form" action="#">
-                                        <input type="text" placeholder="Search here...">
+                                        <input type="text" placeholder="Search here..." v-model="searchKeyword">
                                         <button>
                                             <i class="icon-magnifier"></i>
                                         </button>
@@ -134,7 +142,9 @@ const onChangePage = (n) => {
                                 <h4 class="sidebar-widget-title">Categories </h4>
                                 <div class="shop-catigory">
                                     <ul>
-                                        <li v-for="cat in Categories" :key="cat.title"><span @click="catFilter=cat.slug" :class="{active:catFilter===cat.slug}">{{cat.title}}</span></li>
+                                        <li v-for="cat in Categories" :key="cat.title"><span
+                                                @click="catFilter = cat.slug"
+                                                :class="{ active: catFilter === cat.slug }">{{ cat.title }}</span></li>
                                     </ul>
                                 </div>
                             </div>

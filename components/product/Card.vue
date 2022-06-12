@@ -13,9 +13,9 @@ const { data } = defineProps({
 <template>
     <div class="single-product-wrap mb-35"  v-if="data">
         <div class="product-img product-img-zoom mb-15">
-            <a href="product-details.html">
+            <NuxtLink to="/product-details">
                 <img :src="`${data.image?data.image:''}`" alt="">
-            </a>
+            </NuxtLink>>
             <div class="product-action-2 tooltip-style-2">
                 <button title="Wishlist"><i class="fa-light fa-heart"></i></button>
                 <button title="Quick View"><i class="fa-duotone fa-arrows-maximize"></i></button>
@@ -30,7 +30,7 @@ const { data } = defineProps({
                 </div>
                 <span>(2)</span>
             </div>
-            <h3><a href="product-details.html">{{ data.title }}</a></h3>
+            <h3><NuxtLink to="/product-details">{{ data.title }}</NuxtLink></h3>
             <div class="product-price-2">
                 <span>${{ data.price }}</span>
             </div>
