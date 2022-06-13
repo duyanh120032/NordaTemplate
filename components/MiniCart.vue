@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onClickOutside } from '@vueuse/core'
-import { emit } from 'process';
+import { useCartStore } from '@/store/cart'
+import { storeToRefs } from 'pinia';
+
 
 const { isOpen } = defineProps({
     isOpen: {
@@ -8,6 +10,7 @@ const { isOpen } = defineProps({
         type: Boolean,
     },
 });
+const { getItems: cartItems } = storeToRefs(useCartStore());
 const emits = defineEmits(['close'])
 
 // const _isOpen = toRef(props, 'isOpen');
@@ -25,30 +28,7 @@ onClickOutside(MiniCartRef, () => {
             <div class="cart-content">
                 <h3>Shopping Cart</h3>
                 <ul>
-                    <li class="single-product-cart">
-                        <div class="cart-img">
-                            <a href="#"><img src="assets/images/cart/cart-1.jpg" alt=""></a>
-                        </div>
-                        <div class="cart-title">
-                            <h4><a href="#">Simple Black T-Shirt</a></h4>
-                            <span> 1 × $49.00 </span>
-                        </div>
-                        <div class="cart-delete">
-                            <a href="#">×</a>
-                        </div>
-                    </li>
-                    <li class="single-product-cart">
-                        <div class="cart-img">
-                            <a href="#"><img src="assets/images/cart/cart-2.jpg" alt=""></a>
-                        </div>
-                        <div class="cart-title">
-                            <h4><a href="#">Norda Backpack</a></h4>
-                            <span> 1 × $49.00 </span>
-                        </div>
-                        <div class="cart-delete">
-                            <a href="#">×</a>
-                        </div>
-                    </li>
+                    <ProductCartMini v-for="item in cartItems" :key="item.id" />
                 </ul>
                 <div class="cart-total">
                     <h4>Subtotal: <span>$170.00</span></h4>

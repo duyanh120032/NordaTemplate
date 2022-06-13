@@ -1,5 +1,12 @@
 <script setup lang="ts">
-    const items  = ref(5);
+import {  useCartStore } from '@/store/cart'
+import { storeToRefs } from 'pinia';
+
+const { getItems: cartItems,getTotal } = storeToRefs(useCartStore())
+const cartStore = useCartStore()
+
+
+
 </script>
 <template>
     <div>
@@ -23,8 +30,8 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <th v-if="items==0">No item from cart</th>
-                                       <cart-item v-for="item in items" :key="item" @remove-from-cart="items--"/>
+                                        <th v-if="cartItems.length == 0" class="text-danger ">No item from cart</th>
+                                        <cart-item v-for="item in cartItems" :key="item.id" :data="item" />
                                     </tbody>
                                 </table>
                             </div>
@@ -57,7 +64,7 @@
                                                 </label>
                                                 <select class="email s-email s-wid">
                                                     <option>Bangladesh</option>
-                                                    <Option>Albania</Option>
+
                                                     <option>Åland Islands</option>
                                                     <option>Afghanistan</option>
                                                     <option>Belgium</option>
@@ -94,7 +101,7 @@
                                     <div class="discount-code">
                                         <p>Enter your coupon code if you have one.</p>
                                         <form>
-                                            <input type="text"  name="name">
+                                            <input type="text" name="name">
                                             <button class="cart-btn-2" type="submit">Apply Coupon</button>
                                         </form>
                                     </div>
@@ -105,7 +112,7 @@
                                     <div class="title-wrap">
                                         <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                                     </div>
-                                    <h5>Total products <span>$260.00</span></h5>
+                                    <h5>Total products <span>${{getTotal}}</span></h5>
                                     <div class="total-shipping">
                                         <h5>Total shipping</h5>
                                         <ul>
@@ -113,7 +120,7 @@
                                             <li><input type="checkbox"> Express <span>$30.00</span></li>
                                         </ul>
                                     </div>
-                                    <h4 class="grand-totall-title">Grand Total <span>$260.00</span></h4>
+                                    <h4 class="grand-totall-title">Grand Total <span>${{getTotal}}</span></h4>
                                     <a href="#">Proceed to Checkout</a>
                                 </div>
                             </div>

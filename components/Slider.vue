@@ -37,41 +37,44 @@ const handlePrevSlide = () => {
 </script>
 
 <template>
-    <div class="slider-area bg-gray">
-        <div class="hero-slider-active-1 hero-slider-pt-1 nav-style-1 dot-style-1">
-            <div class="single-hero-slider single-animation-wrap " v-for="(n, idx) in data" :key="n.id"
-                :class="`${isActive === idx ? 'active' : 'no-active'}`">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="hero-slider-content-1 hero-slider-content-1-pt-1 slider-animated-1">
-                                <h4 class="animated">{{ n.title }}</h4>
-                                <h1 class="animated">Leather Simple <br>Backpacks</h1>
-                                <p class="animated">Discover our collection with leather simple backpacks. Less is more
-                                    never out trend.</p>
-                                <div class="btn-style-1">
-                                    <a class="animated btn-1-padding-1" href="product-details.html">Explore Now</a>
+    <div>
+        <div class="slider-area bg-gray">
+            <div class="hero-slider-active-1 hero-slider-pt-1 nav-style-1 dot-style-1">
+                <div class="single-hero-slider single-animation-wrap " v-for="(n, idx) in data" :key="n.id"
+                    :class="`${isActive === idx ? 'active' : 'no-active'}`">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="hero-slider-content-1 hero-slider-content-1-pt-1 slider-animated-1">
+                                    <h4 class="animated">{{ n.title }}</h4>
+                                    <h1 class="animated">Leather Simple <br>Backpacks</h1>
+                                    <p class="animated">Discover our collection with leather simple backpacks. Less is
+                                        more
+                                        never out trend.</p>
+                                    <div class="btn-style-1">
+                                        <a class="animated btn-1-padding-1" href="product-details.html">Explore Now</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6">
-                            <div class="hero-slider-img-1 slider-animated-1">
-                                <img class="animated" :src="n.image ? n.image : 'assets/images/slider/hm-1-slider-1.png'"
-                                    alt="">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="hero-slider-img-1 slider-animated-1">
+                                    <img class="animated"
+                                        :src="n.image ? n.image : 'assets/images/slider/hm-1-slider-1.png'" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="dots">{{ isActive }}/2</div>
-        <div>
-            <button class="btn btn-dark next prev-btn" @click="handlePrevSlide">
-                <i class="fa-light fa-minus"></i>
-            </button>
-            <button class="btn btn-dark next-btn" @click="handleNextSlide">
-                <i class="fa-light fa-plus"></i>
-            </button>
+            <div class="dots">{{ isActive }}/2</div>
+            <div>
+                <button class="btn btn-dark next prev-btn" @click="handlePrevSlide">
+                    <i class="fa-light fa-minus"></i>
+                </button>
+                <button class="btn btn-dark next-btn" @click="handleNextSlide">
+                    <i class="fa-light fa-plus"></i>
+                </button>
+            </div>
         </div>
     </div>
 </template>
