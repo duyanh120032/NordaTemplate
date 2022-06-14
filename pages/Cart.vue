@@ -23,9 +23,7 @@ const handleApplyCoupon = async () => {
             discount.value = Coupon.discount
             couponError.value = ''
             toast.success('Coupon applied')
-            cartStore.applyCoupon(Coupon)
         }
-
     }
 }
 const grandTotal = computed(() => {

@@ -1,12 +1,29 @@
 <script setup lang="ts">
 import { useCartStore } from "@/store/cart";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 const user = useSupabaseUser();
 const client = useSupabaseClient();
 const isLoggedIn = ref(false);
+const isOpenApplyCoupon = ref(false);
 const isOpenLogin = ref(false);
 const isPendingLogin = ref(false);
+const discount = ref(0);
 
-const { getItems: Items, getCoupon, getTotal } = useCartStore();
+const coupon = ref("");
+const handleApplyCoupon = async () => {
+    if (coupon.value.length > 0) {
+        const { data: Coupon, error } = await client.from('Coupons').select('*').eq('code', coupon.value).single()
+        if (error) {
+            toast.error(error.message)
+        } else {
+            discount.value = Coupon.discount
+            toast.success('Coupon applied')
+        }
+    }
+}
+const { getItems: Items, getTotal } = useCartStore();
 
 const userData = reactive({
     email: '',
@@ -68,28 +85,55 @@ const handleLogout = async () => {
 const shippingCost = computed(() => {
     const total = getTotal;
     if (total > 100) {
-        return 'Free';
+        return 0;
     }
     return 5;
 })
 const grandTotal = computed(() => {
     let _total = getTotal
-    if (getCoupon) {
-        _total = _total - _total * getCoupon.discount / 100;
+    if (discount.value > 0) {
+        _total = _total - _total * discount.value / 100;
     }
-    if(shippingCost.value === 'Free') {
-        return _total;
-    }
+    // if (shippingCost.value === 'Free') {
+    //     return _total;
+    // }
     return _total + shippingCost.value;
 })
+const handlePlaceOrder = async () => {
+    if (isLoggedIn.value) {
+        const { data: Order, error } = await client.from('Order').insert({
+            user_id: user.value.id,
+            // items: [...Items],just contains the id of the item
+            items: Items.map(item => {
+                return {
+                    item_id: item.id,
+                    quantity: item.quantity,
+                    size: item.size,
+                    color: item.color,
+                }
+            }),
+            total: grandTotal.value,
+            shipping_cost: shippingCost.value,
+            shipping_data: shippingData,
+        })
+        if (error) {
+            toast.error(error.message)
+        } else {
+            toast.success('Order placed')
+            // router.push('/orders')
+        }
+    }
 
+}
 
 </script>
 
 <template>
     <div class="checkout-main-area pt-120 pb-120">
         <div class="container">
-            <div v-if="user">{{ user }} <button @click="handleLogout">Log out</button></div>
+            <div v-if="user">
+                <p class="text-success">Hello <span class="ml-2">{{ user.email }}</span></p>
+            </div>
             <div class="customer-zone mb-20" v-if="!isLoggedIn">
                 <p class="cart-page-title">Returning customer? <a class="checkout-click1" href="#"
                         @click="isOpenLogin = true">Click here to
@@ -138,11 +182,12 @@ const grandTotal = computed(() => {
                 </div>
             </div>
             <div class="customer-zone mb-20">
-                <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#">Click here to enter your
+                <p class="cart-page-title">Have a coupon? <a class="checkout-click3" href="#"
+                        @click="isOpenApplyCoupon = !isOpenApplyCoupon">Click here to enter your
                         code</a></p>
-                <div class="checkout-login-info3">
-                    <form action="#">
-                        <input type="text" placeholder="Coupon code">
+                <div class="checkout-login-info3 " :class="{ 'd-block': isOpenApplyCoupon }">
+                    <form action="#" @submit.prevent="handleApplyCoupon">
+                        <input type="text" placeholder="Coupon code" v-model="coupon">
                         <input type="submit" value="Apply Coupon">
                     </form>
                 </div>
@@ -230,9 +275,9 @@ const grandTotal = computed(() => {
                                                 </span></li>
                                         </ul>
                                     </div>
-                                    <div class="your-order-info order-subtotal" v-if="getCoupon">
+                                    <div class="your-order-info order-subtotal" v-if="discount > 0">
                                         <ul>
-                                            <li>Coupon <span>-{{ getCoupon }} </span></li>
+                                            <li>Coupon <span>-{{ discount }} % </span></li>
                                         </ul>
                                     </div>
                                     <div class="your-order-info order-shipping">
@@ -289,7 +334,7 @@ const grandTotal = computed(() => {
                                 </div>
                             </div>
                             <div class="Place-order">
-                                <a href="#">Place Order</a>
+                                <a href="#" @click="handlePlaceOrder">Place Order</a>
                             </div>
                         </div>
                     </div>

@@ -13,8 +13,8 @@ const { addToCart, addToWishlist } = useCartStore()
 const handleAddToCart = (data: ProductDetail) => {
     const _data = {
         ...data,
-        colors: data.colors[1] ? data.colors[1] : data.colors[0],
-        sizes: data.sizes[1] ? data.sizes[1] : data.sizes[0],
+        color: data.colors[1] ? data.colors[1] : data.colors[0],
+        size: data.sizes[1] ? data.sizes[1] : data.sizes[0],
         quantity: 1
     }
     addToCart(_data as unknown as CartItem)

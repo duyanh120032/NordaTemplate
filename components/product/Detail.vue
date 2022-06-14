@@ -18,8 +18,8 @@ const selectedSize = ref(product.sizes[0])
 const handleAddToCart = () => {
     const _data = {
         ...product,
-        colors: selectedColor.value,
-        sizes: selectedSize.value,
+        color: selectedColor.value,
+        size: selectedSize.value,
         quantity: 1
     }
     addToCart(_data as unknown as CartItem)
@@ -27,8 +27,8 @@ const handleAddToCart = () => {
 const handleAddToWishlist = () => {
     const _data = {
         ...product,
-        colors: selectedColor.value,
-        sizes: selectedSize.value,
+        color: selectedColor.value,
+        size: selectedSize.value,
         quantity: selectedQuantity.value
     }
     addToWishlist(_data as unknown as CartItem)
@@ -37,7 +37,6 @@ watch(selectedQuantity, (val) => {
     if (val > product.stock) {
         selectedQuantity.value = product.stock
     }
-    // if < 0
     if (val < 1) {
         selectedQuantity.value = 1
     }
