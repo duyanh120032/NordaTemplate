@@ -16,4 +16,5 @@ export default defineNuxtConfig({
     transpile: process.env.NODE_ENV === "development" ? [] : ["element-plus"],
   },
   buildModules: ['@pinia/nuxt'],
+  
 });

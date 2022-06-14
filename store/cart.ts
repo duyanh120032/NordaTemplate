@@ -1,5 +1,8 @@
 import { CartItem, Product } from "./../types/product.d";
 import { defineStore } from "pinia";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const initialState = {
   items: [] as CartItem[],
@@ -21,8 +24,10 @@ export const useCartStore = defineStore("cart", {
         this.items.push({
           ...product,
         });
+        toast.success(`${product.title} added to cart`);
       } else {
         this.items[index].quantity++;
+        toast.success(`${product.title} quantity increased`);
       }
     },
     calculateTotal() {
@@ -61,6 +66,7 @@ export const useCartStore = defineStore("cart", {
       });
       if (index !== -1) {
         this.items.splice(index, 1);
+        toast.success(`${this.items[index].title} removed from cart`);
       }
     },
     removeWishlistItem(id: number) {
@@ -69,6 +75,7 @@ export const useCartStore = defineStore("cart", {
       });
       if (index !== -1) {
         this.wishlist.splice(index, 1);
+        toast.success(`${this.wishlist[index].title} removed from wishlist`);
       }
     },
     addToWishlist(product: CartItem) {
@@ -79,8 +86,10 @@ export const useCartStore = defineStore("cart", {
         this.wishlist.push({
           ...product,
         });
+        toast.success(`${product.title} added to wishlist`);
       } else {
         this.wishlist[index].quantity++;
+        toast.success(`${product.title} quantity increased`);
       }
     },
     incWishlistQuantity(id: number) {

@@ -2,6 +2,7 @@
 import { useCartStore } from '@/store/cart'
 import { PropType } from 'vue';
 import { CartItem, Product, ProductDetail } from '~~/types/product';
+
 const { data } = defineProps({
     data: {
         type: Object as PropType<ProductDetail>,
@@ -9,7 +10,6 @@ const { data } = defineProps({
     }
 })
 const { addToCart, addToWishlist } = useCartStore()
-
 const handleAddToCart = (data: ProductDetail) => {
     const _data = {
         ...data,

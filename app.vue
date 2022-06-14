@@ -6,6 +6,7 @@
   </div>
 </template>
 <script setup lang="ts">
+
 useHead({
   title: 'Homepage',
 
@@ -20,13 +21,18 @@ useHead({
   {
     rel: 'stylesheet',
     href: './assets/scss/style.scss'
-  },],
+  },
+  ],
+
   // script: [
   //   {
   //     src: './fontawesome.js'
   //   }
   // ]
 })
+
+
+
 </script>
 <style>
 body {
