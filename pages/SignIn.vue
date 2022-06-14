@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 const isActive = ref('login');
 const client = useSupabaseClient()
 const router = useRouter()
@@ -29,6 +32,7 @@ const handleRegister = async () => {
         newUser.error = 'Something went wrong';
         return;
     }
+    toast.success('Please check your email to verify your account');
     isActive.value = 'login';
 
 
@@ -44,7 +48,7 @@ const handleLogin = async () => {
         loginUser.error = 'Something went wrong';
         return;
     }
-    alert('Login successful');
+    toast.success('Login successful');
     router.push('/')
 }
 const handleSendLinkReset = async () => {
@@ -53,7 +57,7 @@ const handleSendLinkReset = async () => {
         resetUser.error = 'Something went wrong';
         return;
     }
-    alert('Email sent');
+    toast.success('Reset link sent');
 }
 
 </script>
@@ -79,7 +83,7 @@ const handleSendLinkReset = async () => {
                                 <div id="lg1" class="tab-pane " :class="{ 'active': isActive === 'login' }">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form action="#" method="post" @click="handleLogin">
+                                            <form  @submit.prevent="handleLogin">
                                                 <input type="email" name="email" placeholder="Email"
                                                     v-model="loginUser.email">
                                                 <input type="password" name="user-password" placeholder="Password"

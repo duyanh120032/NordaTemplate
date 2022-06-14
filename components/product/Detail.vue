@@ -3,7 +3,7 @@ import { ProductDetail, CartItem } from "@/types/product"
 import { useCartStore } from "@/store/cart"
 const route = useRoute()
 const client = useSupabaseClient()
-const { addToCart,addToWishlist } = useCartStore()
+const { addToCart, addToWishlist } = useCartStore()
 
 const { data: product, error } = await client.from<ProductDetail>('Product').select(`*,catSlug:category.slug`).eq('id', route.query.id as string).single()
 if (!error) {
@@ -11,6 +11,7 @@ if (!error) {
         views: product.views + 1
     }).eq('id', route.query.id as string)
 }
+const selectedQuantity = ref(1)
 const selectedColor = ref(product.colors[0])
 const selectedSize = ref(product.sizes[0])
 
@@ -28,10 +29,19 @@ const handleAddToWishlist = () => {
         ...product,
         colors: selectedColor.value,
         sizes: selectedSize.value,
-        quantity: 1
+        quantity: selectedQuantity.value
     }
     addToWishlist(_data as unknown as CartItem)
 }
+watch(selectedQuantity, (val) => {
+    if (val > product.stock) {
+        selectedQuantity.value = product.stock
+    }
+    // if < 0
+    if (val < 1) {
+        selectedQuantity.value = 1
+    }
+})
 
 </script>
 
@@ -85,7 +95,8 @@ const handleAddToWishlist = () => {
                                 <div class="pro-details-color-content">
                                     <ul>
                                         <li v-for="color in product.colors" :key="color" @click="selectedColor = color">
-                                            <a :class="`${color} ${selectedColor === color ? 'active' : ''}`">{{ color }}</a>
+                                            <a :class="`${color} ${selectedColor === color ? 'active' : ''}`">{{ color
+                                            }}</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -94,9 +105,10 @@ const handleAddToWishlist = () => {
                                 <span>Size:</span>
                                 <div class="pro-details-size-content">
                                     <ul>
-                                        <li @click="selectedSize = size" v-for="size in product.sizes" :key="size"><a :class="{active:selectedSize===size}">{{
-                                                size
-                                        }}</a></li>
+                                        <li @click="selectedSize = size" v-for="size in product.sizes" :key="size"><a
+                                                :class="{ active: selectedSize === size }">{{
+                                                        size
+                                                }}</a></li>
 
                                     </ul>
                                 </div>
@@ -104,9 +116,10 @@ const handleAddToWishlist = () => {
                             <div class="pro-details-quality">
                                 <span>Quantity:</span>
                                 <div class="cart-plus-minus">
-                                    <div class="dec qtybutton">-</div>
-                                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="1">
-                                    <div class="inc qtybutton">+</div>
+                                    <div class="dec qtybutton" @click="selectedQuantity--">-</div>
+                                    <input class="cart-plus-minus-box" type="text" name="qtybutton"
+                                        :value="selectedQuantity">
+                                    <div class="inc qtybutton" @click="selectedQuantity++">+</div>
                                 </div>
                             </div>
                             <div class="product-details-meta">
@@ -119,7 +132,8 @@ const handleAddToWishlist = () => {
                                     <a title="Add to Cart" href="#" @click="handleAddToCart">Add To Cart </a>
                                 </div>
                                 <div class="pro-details-action">
-                                    <a title="Add to Wishlist" href="#" @click="handleAddToWishlist"><i class="fa-light fa-heart"></i></a>
+                                    <a title="Add to Wishlist" href="#" @click="handleAddToWishlist"><i
+                                            class="fa-light fa-heart"></i></a>
                                     <a title="Add to Compare" href="#"><i class="fa-duotone fa-arrows-rotate"></i></a>
                                     <a class="social" title="Social" href="#"><i class="fa-light fa-share"></i></a>
                                     <div class="product-dec-social">

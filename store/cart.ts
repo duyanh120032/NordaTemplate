@@ -1,3 +1,4 @@
+import { Coupon } from './../types/coupon.d';
 import { CartItem, Product } from "./../types/product.d";
 import { defineStore } from "pinia";
 import { useToast } from "vue-toastification";
@@ -8,8 +9,8 @@ const initialState = {
   items: [] as CartItem[],
   wishlist: [] as CartItem[],
   total: 0,
+  coupon: null as Coupon | null,
 };
-
 export const useCartStore = defineStore("cart", {
   state: () => {
     return initialState;
@@ -112,6 +113,9 @@ export const useCartStore = defineStore("cart", {
         }
       }
     },
+    applyCoupon(coupon: object) {
+      this.coupon = coupon;
+    },
   },
   getters: {
     getTotal: (state) => {
@@ -130,6 +134,9 @@ export const useCartStore = defineStore("cart", {
     },
     getCountWishlist: (state) => {
       return state.wishlist.length;
+    },
+    getCoupon: (state) => {
+      return state.coupon;
     },
   },
 });
