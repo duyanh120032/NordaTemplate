@@ -10,7 +10,7 @@ const { isOpen } = defineProps({
         type: Boolean,
     },
 });
-const { getItems: cartItems } = storeToRefs(useCartStore());
+const { getItems: cartItems,getTotal } = storeToRefs(useCartStore());
 const emits = defineEmits(['close'])
 
 // const _isOpen = toRef(props, 'isOpen');
@@ -28,10 +28,10 @@ onClickOutside(MiniCartRef, () => {
             <div class="cart-content">
                 <h3>Shopping Cart</h3>
                 <ul>
-                    <ProductCartMini v-for="item in cartItems" :key="item.id" />
+                    <ProductCartMini v-for="item in cartItems" :key="item.id" :data="item" />
                 </ul>
                 <div class="cart-total">
-                    <h4>Subtotal: <span>$170.00</span></h4>
+                    <h4>Subtotal: <span>${{getTotal}}</span></h4>
                 </div>
                 <div class="cart-checkout-btn">
                     <NuxtLink class="btn-hover cart-btn-style" to="/cart">view cart</NuxtLink>

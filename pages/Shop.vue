@@ -12,20 +12,47 @@ const { data: Categories } = await useAsyncData('categories', async () => {
     const { data } = await client.from('Category').select('*')
     return data
 })
+// get colors from products
+const { data: colors } = await useAsyncData('colors', async () => {
+    const { data } = await client.from('Product').select('colors')
+    let _colors = []
+    data.forEach(item => {
+        let i = 0
+        item.colors.forEach(color => {
+            if (!_colors.includes(color)) {
+                _colors.push(color)
+            }
+        })
+    })
+    return _colors
+})
+// filter by color
+const selectedColors = ref<string[]>([])
+const filerByColor = (color: string) => {
+    if (selectedColors.value.includes(color)) {
+        selectedColors.value = selectedColors.value.filter(item => item !== color)
+    } else {
+        selectedColors.value.push(color)
+    }
+}
+
+// pagination
 const catFilter = ref('');
 const viewOptions = [
-    20, 40, 60, 80
+    8, 12, 15, 20, 9999
 ]
 const end = ref(0)
 const start = ref(0)
 const currentPage = ref(1);
-const perPage = ref(3);
+const perPage = ref(viewOptions[0]);
 const totalPages = computed(() => {
     return Math.ceil(data.value.length / perPage.value) <= 0 ? 1 : Math.ceil(data.value.length / perPage.value);
 })
-const viewOption = ref(viewOptions[0]);
 const sortBy = ref('');
 const searchKeyword = ref<string>('')
+const filterByPrice = ref('')
+
+
 const ProductData = computed(() => {
     // pagination
     start.value = (currentPage.value - 1) * perPage.value;
@@ -35,7 +62,7 @@ const ProductData = computed(() => {
         return data.value.filter(product => product.category.includes(catFilter.value))
     }
     // sort
-    const sortedData = data.value.slice(start.value, end.value).sort((a, b) => {
+    let sortedData = data.value.slice(start.value, end.value).sort((a, b) => {
         if (sortBy.value === 'name') {
             return a.name > b.name ? 1 : -1;
         } else {
@@ -44,21 +71,35 @@ const ProductData = computed(() => {
     });
 
     if (searchKeyword.value !== '') {
-        return sortedData.filter(product => {
+        sortedData = sortedData.filter(product => {
             return product.title.toLowerCase().includes(searchKeyword.value.toLowerCase())
         })
 
     }
+    // filter by color
+    if (selectedColors.value.length > 0) {
+        perPage.value = viewOptions[viewOptions.length - 2]
+        sortedData = sortedData.filter(product => {
+            return selectedColors.value.every(color => product.colors.includes(color))
+        })
+
+    }
+    // filter by price
+    if (filterByPrice.value !== '') {
+
+        sortedData = sortedData.filter(product => {
+            return product.price <= filterByPrice.value
+        })
+    }
     return sortedData;
 })
-const onNextPage = () => {
 
+const onNextPage = () => {
     if (currentPage.value < totalPages.value) {
         currentPage.value++;
     }
 }
 const onPrevPage = () => {
-
     if (currentPage.value > 1) {
         currentPage.value--;
     }
@@ -88,8 +129,8 @@ const onChangePage = (n) => {
                             <div class="product-sorting-wrapper">
                                 <div class="product-shorting shorting-style">
                                     <label>View :</label>
-                                    <select v-model="viewOption">
-                                        <option value="20" selected>20</option>
+                                    <select v-model="perPage">
+                                        <option value="6" selected>6</option>
                                         <option :value="otp" v-for="otp in viewOptions" :key="otp">{{
                                                 otp
                                         }}</option>
@@ -151,11 +192,11 @@ const onChangePage = (n) => {
                             <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
                                 <h4 class="sidebar-widget-title">Price Filter </h4>
                                 <div class="price-filter">
-                                    <span>Range: $100.00 - 1.300.00 </span>
-                                    <div id="slider-range"></div>
+                                    <span>Range: $0 - $300 </span>
                                     <div class="price-slider-amount">
                                         <div class="label-input">
-                                            <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                            <input type="number" id="amount" name="price" placeholder="Add Your Price"
+                                                v-model="filterByPrice" />
                                         </div>
                                         <button type="button">Filter</button>
                                     </div>
@@ -222,30 +263,14 @@ const onChangePage = (n) => {
                                 <h4 class="sidebar-widget-title">Color </h4>
                                 <div class="sidebar-widget-list">
                                     <ul>
-                                        <li>
+                                        <li v-for="color in colors" :key="color">
                                             <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Green <span>7</span> </a>
+                                                <input type="checkbox" @change="filerByColor(color)">
+                                                <p>{{ color }} </p>
                                                 <span class="checkmark"></span>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Cream <span>8</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Blue <span>9</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">Black <span>3</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
+
                                     </ul>
                                 </div>
                             </div>

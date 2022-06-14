@@ -12,9 +12,8 @@ export interface ProductDetail extends Product {
   colors: string[];
   sizes: string[];
 }
-export interface CartItem extends Product {
+export interface CartItem extends ProductDetail {
   size: string;
   quantity: number;
   color: string;
-  
 }

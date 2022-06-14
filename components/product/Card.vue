@@ -1,28 +1,33 @@
 <script setup lang="ts">
 import { useCartStore } from '@/store/cart'
 import { PropType } from 'vue';
-import { CartItem, Product } from '~~/types/product';
+import { CartItem, Product, ProductDetail } from '~~/types/product';
 const { data } = defineProps({
     data: {
-        type: Object as PropType<Product>,
+        type: Object as PropType<ProductDetail>,
         default: () => ({})
     }
 })
-const { addToCart } = useCartStore()
+const { addToCart, addToWishlist } = useCartStore()
 
-const handleAddToCart = (data: Product) => {
+const handleAddToCart = (data: ProductDetail) => {
     const _data = {
         ...data,
-        colors: 'Blue',
-        sizes: 'M',
+        colors: data.colors[1] ? data.colors[1] : data.colors[0],
+        sizes: data.sizes[1] ? data.sizes[1] : data.sizes[0],
         quantity: 1
     }
     addToCart(_data as unknown as CartItem)
 }
-
-
-
-
+const handleAddToWishlist = (data: ProductDetail) => {
+    const _data = {
+        ...data,
+        colors: data.colors[1] ? data.colors[1] : data.colors[0],
+        sizes: data.sizes[1] ? data.sizes[1] : data.sizes[0],
+        quantity: 1
+    }
+    addToWishlist(_data as unknown as CartItem)
+}
 </script>
 
 <template>
@@ -31,9 +36,10 @@ const handleAddToCart = (data: Product) => {
             <div class="product-img product-img-zoom mb-15">
                 <NuxtLink :to="`/detail?id=${data.id}`">
                     <img :src="`${data.image ? data.image : ''}`" alt="">
-                </NuxtLink>>
+                </NuxtLink>
                 <div class="product-action-2 tooltip-style-2">
-                    <button title="Wishlist"><i class="fa-light fa-heart"></i></button>
+                    <button title="Wishlist" @click="handleAddToWishlist(data)"><i
+                            class="fa-light fa-heart"></i></button>
                     <button title="Quick View"><i class="fa-duotone fa-arrows-maximize"></i></button>
                     <button title="Compare"><i class="fa-duotone fa-arrows-rotate"></i></button>
                 </div>
@@ -72,3 +78,11 @@ const handleAddToCart = (data: Product) => {
         </div>
     </div>
 </template>
+<style scoped>
+img {
+    width: 367px;
+    height: 440px;
+    object-fit: cover;
+
+}
+</style>

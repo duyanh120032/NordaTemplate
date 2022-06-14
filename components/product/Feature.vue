@@ -19,13 +19,6 @@ const category = [
     }
 ]
 const client = useSupabaseClient();
-// const products = ref({
-//     "best- seller": [],
-//     "trending": [],
-//     "new-arrivals": [],
-//     "all-products": [],
-// });
-// console.log("🚀 ~ file: Feature.vue ~ line 28 ~ products", products.value.trending)
 const { data: Product } = await client.from('Product').select("*")
 
 </script>

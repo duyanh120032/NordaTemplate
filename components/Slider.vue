@@ -13,12 +13,11 @@ const isActive = ref(0);
 // autoplay
 // const changeSlide = setInterval(() => {
 //     isActive.value++;
-//     if (isActive.value === 3) {
-//         isActive.value = 1;
+//     if (isActive.value === 2) {
+//         isActive.value = 0;
 //     }
 // }, 3000);
 // onBeforeUnmount(() => {
-//     console.log('unmount');
 //     clearInterval(changeSlide);
 // });
 const handleNextSlide = () => {
@@ -52,7 +51,8 @@ const handlePrevSlide = () => {
                                         more
                                         never out trend.</p>
                                     <div class="btn-style-1">
-                                        <a class="animated btn-1-padding-1" href="product-details.html">Explore Now</a>
+                                        <NuxtLink class="animated btn-1-padding-1" :to="`/detail?id=${n.id}`">Explore
+                                            Now</NuxtLink>
                                     </div>
                                 </div>
                             </div>

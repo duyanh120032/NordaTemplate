@@ -12,7 +12,7 @@ const { data } = defineProps({
         default: () => ({})
     }
 })
-console.log(data);
+
 </script>
 <template>
     <tr v-if="data">

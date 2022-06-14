@@ -10,7 +10,7 @@ const onCloseCart = () => {
     isOpenCart.value = false
 }
 const isOpenMobileSidebar = useState('false', () => false);
-const { getCount } = storeToRefs(useCartStore())
+const { getCount, getCountWishlist } = storeToRefs(useCartStore())
 
 </script>
 
@@ -75,7 +75,7 @@ const { getCount } = storeToRefs(useCartStore())
                         <div class="row align-items-center">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                    <a href="index.html"><img src="assets/images/logo/logo.png" alt="logo"></a>
+                                    <NuxtLink to="/"><img src="assets/images/logo/logo.png" alt="logo"></NuxtLink>
                                 </div>
                             </div>
                             <div class="col-xl-8 col-lg-7">
@@ -90,7 +90,9 @@ const { getCount } = storeToRefs(useCartStore())
                                                 <NuxtLink to="/shop">SHOP </NuxtLink>
 
                                             </li>
-                                            <li><a href="contact.html">CONTACT </a></li>
+                                            <li>
+                                                <NuxtLink to="/contact">CONTACT </NuxtLink>
+                                            </li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -112,13 +114,14 @@ const { getCount } = storeToRefs(useCartStore())
                                         <NuxtLink to="/signIn"><i class="fa-light fa-user"></i></NuxtLink>
                                     </div>
                                     <div class="same-style-2">
-                                        <a href="wishlist.html"><i class="fa-light fa-heart"></i><span
-                                                class="pro-count red">03</span></a>
+                                        <NuxtLink to="/Wish"><i class="fa-light fa-heart"></i><span
+                                                class="pro-count red"
+                                                v-if="getCountWishlist>0">0{{getCountWishlist}}</span></NuxtLink>
                                     </div>
                                     <div class="same-style-2 header-cart">
                                         <a class="cart-active" href="#" @click="isOpenCart = !isOpenCart">
-                                            <i class="fa-light fa-cart-arrow-down"></i><span
-                                                class="pro-count red" v-if="getCount>0">0{{ getCount }}</span>
+                                            <i class="fa-light fa-cart-arrow-down"></i><span class="pro-count red"
+                                                v-if="getCount>0">0{{ getCount }}</span>
                                         </a>
                                     </div>
                                 </div>

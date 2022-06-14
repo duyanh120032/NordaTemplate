@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {  useCartStore } from '@/store/cart'
+import { useCartStore } from '@/store/cart'
 import { storeToRefs } from 'pinia';
 
-const { getItems: cartItems,getTotal } = storeToRefs(useCartStore())
+const { getItems: cartItems, getTotal } = storeToRefs(useCartStore())
 const cartStore = useCartStore()
-
-
-
+const handleClearCart = () => {
+    cartStore.$reset()
+}
 </script>
 <template>
     <div>
@@ -39,11 +39,11 @@ const cartStore = useCartStore()
                                 <div class="col-lg-12">
                                     <div class="cart-shiping-update-wrapper">
                                         <div class="cart-shiping-update">
-                                            <a href="#">Continue Shopping</a>
+                                            <NuxtLink to="/Shop">Continue Shopping</NuxtLink>
                                         </div>
                                         <div class="cart-clear">
                                             <button>Update Cart</button>
-                                            <a href="#">Clear Cart</a>
+                                            <a href="#" @click="handleClearCart">Clear Cart</a>
                                         </div>
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@ const cartStore = useCartStore()
                                     <div class="title-wrap">
                                         <h4 class="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
                                     </div>
-                                    <h5>Total products <span>${{getTotal}}</span></h5>
+                                    <h5>Total products <span>${{ getTotal }}</span></h5>
                                     <div class="total-shipping">
                                         <h5>Total shipping</h5>
                                         <ul>
@@ -120,7 +120,7 @@ const cartStore = useCartStore()
                                             <li><input type="checkbox"> Express <span>$30.00</span></li>
                                         </ul>
                                     </div>
-                                    <h4 class="grand-totall-title">Grand Total <span>${{getTotal}}</span></h4>
+                                    <h4 class="grand-totall-title">Grand Total <span>${{ getTotal }}</span></h4>
                                     <a href="#">Proceed to Checkout</a>
                                 </div>
                             </div>

@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 
 const initialState = {
   items: [] as CartItem[],
-  wishlist: [] as Product[],
+  wishlist: [] as CartItem[],
   total: 0,
 };
 
@@ -48,8 +48,6 @@ export const useCartStore = defineStore("cart", {
       }
     },
     incQuantity(id: number) {
-      console.log("🚀 ~ file: cart.ts ~ line 62 ~ incQuantity ~ id", id);
-
       const index = this.items.findIndex((item: { id: number }) => {
         return item.id === id;
       });
@@ -63,6 +61,46 @@ export const useCartStore = defineStore("cart", {
       });
       if (index !== -1) {
         this.items.splice(index, 1);
+      }
+    },
+    removeWishlistItem(id: number) {
+      const index = this.wishlist.findIndex((item: { id: number }) => {
+        return item.id === id;
+      });
+      if (index !== -1) {
+        this.wishlist.splice(index, 1);
+      }
+    },
+    addToWishlist(product: CartItem) {
+      const index = this.wishlist.findIndex((item: { id: number }) => {
+        return item.id === product.id;
+      });
+      if (index === -1) {
+        this.wishlist.push({
+          ...product,
+        });
+      } else {
+        this.wishlist[index].quantity++;
+      }
+    },
+    incWishlistQuantity(id: number) {
+      const index = this.wishlist.findIndex((item: { id: number }) => {
+        return item.id === id;
+      });
+      if (index !== -1) {
+        this.wishlist[index].quantity++;
+      }
+    },
+    decWishlistQuantity(id: number) {
+      const index = this.wishlist.findIndex((item: { id: number }) => {
+        return item.id === id;
+      });
+      if (index !== -1) {
+        if (this.wishlist[index].quantity > 1) {
+          this.wishlist[index].quantity--;
+        } else {
+          this.wishlist.splice(index, 1);
+        }
       }
     },
   },
@@ -80,6 +118,9 @@ export const useCartStore = defineStore("cart", {
     },
     getCount: (state) => {
       return state.items.length;
-    }
+    },
+    getCountWishlist: (state) => {
+      return state.wishlist.length;
+    },
   },
 });

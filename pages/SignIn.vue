@@ -13,6 +13,9 @@ const loginUser = reactive({
     password: '',
     error: ''
 });
+definePageMeta({
+    middleware: 'auth'
+})
 
 const handleRegister = async () => {
     if (newUser.password !== newUser.confirmPassword) {
@@ -30,7 +33,7 @@ const handleRegister = async () => {
 
 
 }
-const resetUser= reactive({
+const resetUser = reactive({
     email: '',
     error: ''
 });
