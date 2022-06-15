@@ -13,38 +13,8 @@ const isOpenApplyCoupon = ref(false);
 const isOpenLogin = ref(false);
 const isPendingLogin = ref(false);
 const discount = ref(0);
-
-
 const coupon = ref("");
-const handleApplyCoupon = async () => {
-    if (coupon.value.length > 0) {
-        const { data: Coupon, error } = await client.from('Coupons').select('*').eq('code', coupon.value).single()
-        if (error) {
-            toast.error(error.message)
-        } else {
-            discount.value = Coupon.discount
-            toast.success('Coupon applied')
-        }
-    }
-}
 const { getItems: Items, getTotal } = useCartStore();
-
-const userData = reactive({
-    email: '',
-    password: '',
-    error: '',
-})
-const handleLogin = async () => {
-    isPendingLogin.value = true;
-    const res = await client.auth.signIn({ email: userData.email, password: userData.password });
-    if (res.error) {
-        userData.error = res.error.message;
-        isPendingLogin.value = false;
-        return
-    }
-    userData.error = '';
-    isPendingLogin.value = false;
-}
 const cities = [
     'Hà nội',
     'TP. Hồ Chí Minh',
@@ -64,6 +34,11 @@ const cities = [
     'Bình Thuận',
 ]
 const selectedCity = ref(cities[0])
+const userData = reactive({
+    email: '',
+    password: '',
+    error: '',
+})
 
 const shippingData = reactive({
     FirstName: '',
@@ -76,10 +51,38 @@ const shippingData = reactive({
     Zip: '',
     note: '',
 })
+
+
+const handleApplyCoupon = async () => {
+    if (coupon.value.length > 0) {
+        const { data: Coupon, error } = await client.from('Coupons').select('*').eq('code', coupon.value).single()
+        if (error) {
+            toast.error('Coupon not found');
+        } else {
+            discount.value = Coupon.discount
+            toast.success('Coupon applied')
+        }
+    }
+}
+const handleLogin = async () => {
+    isPendingLogin.value = true;
+    const res = await client.auth.signIn({ email: userData.email, password: userData.password });
+    if (res.error) {
+        userData.error = res.error.message;
+        isPendingLogin.value = false;
+        return
+    }
+    userData.error = '';
+    isPendingLogin.value = false;
+}
 watchEffect(() => {
     if (user.value) {
         isLoggedIn.value = true;
         shippingData.Email = user.value.email;
+        shippingData.FirstName = user.value.user_metadata.firstname === undefined ? '' : user.value.user_metadata.firstname;
+        shippingData.LastName = user.value.user_metadata.lastname === undefined ? '' : user.value.user_metadata.lastname;
+        // shippingData.Phone = user.value.user_metadata.phone;
+        // shippingData.Address = user.value.user_metadata.address;
     }
 });
 const handleLogout = async () => {
@@ -103,7 +106,18 @@ const grandTotal = computed(() => {
     // }
     return _total + shippingCost.value;
 })
+const isChecked = computed(() => {
+    if (shippingData.FirstName.length > 0 && shippingData.LastName.length > 0 && shippingData.Email.length > 0 && shippingData.Phone.length > 0 && shippingData.Address.length > 0 && shippingData.City.length > 0 && shippingData.Zip.length > 0) {
+        return true;
+    }
+    return false;
+})
 const handlePlaceOrder = async () => {
+
+    if (!isChecked.value) {
+        toast.error('Please fill all required fields')
+        return
+    }
     if (isLoggedIn.value) {
         const { data: Order, error } = await client.from('Order').insert({
             user_id: user.value.id,
@@ -205,13 +219,13 @@ const handlePlaceOrder = async () => {
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label>First Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text">
+                                        <input type="text" v-model="shippingData.FirstName">
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6">
                                     <div class="billing-info mb-20">
                                         <label>Last Name <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text">
+                                        <input type="text" v-model="shippingData.LastName">
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
@@ -251,7 +265,7 @@ const handlePlaceOrder = async () => {
                                 <div class="col-lg-12 col-md-12">
                                     <div class="billing-info mb-20">
                                         <label>Email Address <abbr class="required" title="required">*</abbr></label>
-                                        <input type="text" v-model="shippingData.Email">
+                                        <input type="text" v-model="shippingData.Email" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -338,7 +352,8 @@ const handlePlaceOrder = async () => {
                                 </div>
                             </div>
                             <div class="Place-order">
-                                <a href="#" @click="handlePlaceOrder">Place Order</a>
+                                <button class="btn " :disabled="!isChecked" @click="handlePlaceOrder">Place
+                                    Order</button>
                             </div>
                         </div>
                     </div>

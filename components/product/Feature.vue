@@ -30,7 +30,7 @@ if (Product) {
     category.value[0].data = Product.slice(0, 6);
     category.value[1].data = Product.slice(6, 12);
     category.value[2].data = Product.slice(12, 18);
-    category.value[3].data = Product.slice(18, 24);
+    category.value[3].data = Product
 
 }
 </script>

@@ -5,7 +5,7 @@ import { useToast } from "vue-toastification";
 tryOnBeforeMount(() => {
     const router = useRouter();
     const user = useSupabaseUser();
-    if(user.value) {
+    if (user.value) {
         router.push("/profile");
     }
 });
@@ -14,6 +14,7 @@ const toast = useToast();
 const isActive = ref('login');
 const client = useSupabaseClient()
 const router = useRouter()
+const isPending = ref(false)
 const newUser = reactive({
     email: '',
     password: '',
@@ -28,20 +29,23 @@ const loginUser = reactive({
 
 
 const handleRegister = async () => {
+    isPending.value = true;
     if (newUser.password !== newUser.confirmPassword) {
         newUser.error = 'Passwords do not match';
         return;
+        isPending.value = false;
     }
     newUser.error = '';
     const data = await client.auth.signUp({ email: newUser.email, password: newUser.password });
 
     if (data.error) {
-        newUser.error = 'Something went wrong';
+        newUser.error = data.error.message;
+        isPending.value = false;
         return;
     }
     toast.success('Please check your email to verify your account');
     isActive.value = 'login';
-
+    isPending.value = false;
 
 }
 const resetUser = reactive({
@@ -49,13 +53,17 @@ const resetUser = reactive({
     error: ''
 });
 const handleLogin = async () => {
+    isPending.value = true;
     loginUser.error = '';
     const data = await client.auth.signIn({ email: loginUser.email, password: loginUser.password });
     if (data.error) {
-        loginUser.error = 'Something went wrong';
+        loginUser.error = data.error.message;
+        isPending.value = false;
         return;
     }
+
     toast.success('Login successful');
+    isPending.value = false;
     router.push('/')
 }
 const handleSendLinkReset = async () => {
@@ -91,8 +99,8 @@ const handleSendLinkReset = async () => {
                                     <div class="login-form-container">
                                         <div class="login-register-form">
                                             <form @submit.prevent="handleLogin">
-                                                <input type="email" name="email" placeholder="Email" autocomplete="email"
-                                                    v-model="loginUser.email">
+                                                <input type="email" name="email" placeholder="Email"
+                                                    autocomplete="email" v-model="loginUser.email">
                                                 <input type="password" name="user-password" placeholder="Password"
                                                     v-model="loginUser.password" autocomplete="current password">
                                                 <span class="text-danger" v-if="loginUser.error">{{ loginUser.error
@@ -103,7 +111,11 @@ const handleSendLinkReset = async () => {
                                                         <label>Remember me</label>
                                                         <span @click="isActive = 'reset'">Forgot Password?</span>
                                                     </div>
-                                                    <button type="submit">Login</button>
+                                                    <button type="submit">Login
+                                                        <div class="spinner-border" role="status" v-if="isPending">
+                                                            <span class="visually-hidden"></span>
+                                                        </div>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -120,9 +132,14 @@ const handleSendLinkReset = async () => {
                                                 <input type="password" name="user-password" placeholder="Password"
                                                     v-model="newUser.password" autocomplete="bday-month">
                                                 <input name="confirmPassword" placeholder="confirmPassword"
-                                                    type="password" v-model="newUser.confirmPassword" autocomplete="current-password">
+                                                    type="password" v-model="newUser.confirmPassword"
+                                                    autocomplete="current-password">
                                                 <div class="button-box">
-                                                    <button type="submit">Register</button>
+                                                    <button type="submit">Register
+                                                        <div class="spinner-border" role="status" v-if="isPending">
+                                                            <span class="visually-hidden"></span>
+                                                        </div>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -151,5 +168,7 @@ const handleSendLinkReset = async () => {
         </div>
     </div>
 </template>
-
+<style scoped>
+.loading {}
+</style>
 

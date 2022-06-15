@@ -35,7 +35,7 @@ onClickOutside(MiniCartRef, () => {
                 </div>
                 <div class="cart-checkout-btn">
                     <NuxtLink class="btn-hover cart-btn-style" to="/cart">view cart</NuxtLink>
-                    <NuxtLink class="no-mrg btn-hover cart-btn-style" to="/cart">checkout</NuxtLink>
+                    <NuxtLink class="no-mrg btn-hover cart-btn-style" to="/checkout">checkout</NuxtLink>
                 </div>
             </div>
         </div>

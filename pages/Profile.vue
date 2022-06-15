@@ -7,7 +7,6 @@ const isActive = ref('Dashboard')
 const actions = [
     { title: "Dashboard", icon: 'fa-gauge' },
     { title: "Orders", icon: 'fa-arrow-down-1-9' },
-    { title: "Download", icon: 'fa-down' },
     { title: "Credit Cards", icon: 'fa-credit-card' },
     { title: "Address", icon: 'fa-map' },
     {
@@ -29,6 +28,8 @@ const handleLogout = async () => {
     await client.auth.signOut()
     router.push('/')
 }
+const {data:orders} = await client.from('Order').select('*').eq('user_id', user.value.id)
+
 
 </script>
 
@@ -77,85 +78,9 @@ const handleLogout = async () => {
                                             :class="{ 'active show': isActive === 'Orders' }">
                                             <div class="myaccount-content">
                                                 <h3>Orders</h3>
-                                                <div class="myaccount-table table-responsive text-center">
-                                                    <table class="table table-bordered">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Order</th>
-                                                                <th>Date</th>
-                                                                <th>Status</th>
-                                                                <th>Total</th>
-                                                                <th>Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Aug 22, 2018</td>
-                                                                <td>Pending</td>
-                                                                <td>$3000</td>
-                                                                <td><a href="cart.html"
-                                                                        class="check-btn sqr-btn ">View</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>2</td>
-                                                                <td>July 22, 2018</td>
-                                                                <td>Approved</td>
-                                                                <td>$200</td>
-                                                                <td><a href="cart.html"
-                                                                        class="check-btn sqr-btn ">View</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>3</td>
-                                                                <td>June 12, 2017</td>
-                                                                <td>On Hold</td>
-                                                                <td>$990</td>
-                                                                <td><a href="cart.html"
-                                                                        class="check-btn sqr-btn ">View</a></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                <profile-orders :data="orders"/>
                                             </div>
-                                        </div>
-                                        <!-- Single Tab Content End -->
-                                        <!-- Single Tab Content Start -->
-                                        <div class="tab-pane fade" id="download" role="tabpanel"
-                                            :class="{ 'show active': isActive === 'Download' }">
-                                            <div class="myaccount-content">
-                                                <h3>Downloads</h3>
-                                                <div class="myaccount-table table-responsive text-center">
-                                                    <table class="table table-bordered">
-                                                        <thead class="thead-light">
-                                                            <tr>
-                                                                <th>Product</th>
-                                                                <th>Date</th>
-                                                                <th>Expire</th>
-                                                                <th>Download</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Haven - Free Real Estate PSD Template</td>
-                                                                <td>Aug 22, 2018</td>
-                                                                <td>Yes</td>
-                                                                <td><a href="#" class="check-btn sqr-btn "><i
-                                                                            class="fa fa-cloud-download"></i> Download
-                                                                        File</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>HasTech - Profolio Business Template</td>
-                                                                <td>Sep 12, 2018</td>
-                                                                <td>Never</td>
-                                                                <td><a href="#" class="check-btn sqr-btn "><i
-                                                                            class="fa fa-cloud-download"></i> Download
-                                                                        File</a></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>                                     
                                         <!-- Single Tab Content End -->
                                         <!-- Single Tab Content Start -->
                                         <div class="tab-pane fade" id="payment-method" role="tabpanel"
@@ -187,62 +112,7 @@ const handleLogout = async () => {
                                             :class="{ 'show active': isActive === 'Account Details' }">
                                             <div class="myaccount-content">
                                                 <h3>Account Details</h3>
-                                                <div class="account-details-form">
-                                                    <form action="#">
-                                                        <div class="row">
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="first-name" class="required">First
-                                                                        Name</label>
-                                                                    <input type="text" id="first-name" />
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-6">
-                                                                <div class="single-input-item">
-                                                                    <label for="last-name" class="required">Last
-                                                                        Name</label>
-                                                                    <input type="text" id="last-name" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="single-input-item">
-                                                            <label for="display-name" class="required">Display
-                                                                Name</label>
-                                                            <input type="text" id="display-name" />
-                                                        </div>
-                                                        <div class="single-input-item">
-                                                            <label for="email" class="required">Email Addres</label>
-                                                            <input type="email" id="email" />
-                                                        </div>
-                                                        <fieldset>
-                                                            <legend>Password change</legend>
-                                                            <div class="single-input-item">
-                                                                <label for="current-pwd" class="required">Current
-                                                                    Password</label>
-                                                                <input type="password" id="current-pwd" />
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-6">
-                                                                    <div class="single-input-item">
-                                                                        <label for="new-pwd" class="required">New
-                                                                            Password</label>
-                                                                        <input type="password" id="new-pwd" />
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-6">
-                                                                    <div class="single-input-item">
-                                                                        <label for="confirm-pwd"
-                                                                            class="required">Confirm Password</label>
-                                                                        <input type="password" id="confirm-pwd" />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </fieldset>
-                                                        <div class="single-input-item">
-                                                            <button class="check-btn sqr-btn ">Save Changes</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                <lazy-profile-account-detail/>
                                             </div>
                                         </div> <!-- Single Tab Content End -->
                                     </div>
