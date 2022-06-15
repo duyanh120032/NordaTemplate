@@ -25,7 +25,6 @@ const handleUpdate = async () => {
     const { user, error } = await client.auth.update({
         data: { firstname: userData.FirstName, lastname: userData.LastName, displayname: userData.DisplayName },
     })
-    console.log("🚀 ~ file: AcccountDetail.vue ~ line 10 ~ handleUpdatePhoneNum ~ user", user)
     if (error) {
         userData.isPending = false
         toast.error(error.message)
@@ -37,7 +36,6 @@ const handleUpdate = async () => {
     userData.isPending = false
 }
 if (user.value) {
-    console.log("🚀 ~ file: AcccountDetail.vue ~ line 15 ~ user.value", user.value.app_metadata)
     userData.FirstName = user.value.user_metadata.firstname
     userData.LastName = user.value.user_metadata.lastname
     userData.DisplayName = user.value.user_metadata.displayname

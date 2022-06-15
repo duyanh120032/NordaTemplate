@@ -27,9 +27,9 @@ const category = ref([
 const client = useSupabaseClient();
 const { data: Product } = await client.from<ProductDetail>('Product').select("*");
 if (Product) {
-    category.value[0].data = Product.slice(0, 6);
-    category.value[1].data = Product.slice(6, 12);
-    category.value[2].data = Product.slice(12, 18);
+    category.value[0].data = Product.slice(0, 8);
+    category.value[1].data = Product.slice(8, 16);
+    category.value[2].data = Product.slice(16, 24);
     category.value[3].data = Product
 
 }

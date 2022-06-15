@@ -72,8 +72,7 @@ const {data:orders} = await client.from('Order').select('*').eq('user_id', user.
                                                     edit your password and account details.</p>
                                             </div>
                                         </div>
-                                        <!-- Single Tab Content End -->
-                                        <!-- Single Tab Content Start -->
+                                    
                                         <div class="tab-pane fade" id="orders" role="tabpanel"
                                             :class="{ 'active show': isActive === 'Orders' }">
                                             <div class="myaccount-content">
@@ -81,8 +80,7 @@ const {data:orders} = await client.from('Order').select('*').eq('user_id', user.
                                                 <profile-orders :data="orders"/>
                                             </div>
                                         </div>                                     
-                                        <!-- Single Tab Content End -->
-                                        <!-- Single Tab Content Start -->
+                                        
                                         <div class="tab-pane fade" id="payment-method" role="tabpanel"
                                             :class="{ 'show active': isActive === 'Credit Cards' }">
                                             <div class="myaccount-content">
@@ -90,35 +88,26 @@ const {data:orders} = await client.from('Order').select('*').eq('user_id', user.
                                                 <p class="saved-message">You Can't Saved Your Payment Method yet.</p>
                                             </div>
                                         </div>
-                                        <!-- Single Tab Content End -->
-                                        <!-- Single Tab Content Start -->
+                                       
                                         <div class="tab-pane fade" id="address-edit" role="tabpanel"
                                             :class="{ 'show active': isActive === 'Address' }">
                                             <div class="myaccount-content">
                                                 <h3>Billing Address</h3>
-                                                <address>
-                                                    <p><strong>Alex Tuntuni</strong></p>
-                                                    <p>1355 Market St, Suite 900 <br>
-                                                        San Francisco, CA 94103</p>
-                                                    <p>Mobile: (123) 456-7890</p>
-                                                </address>
-                                                <a href="#" class="check-btn sqr-btn "><i class="fa fa-edit"></i> Edit
-                                                    Address</a>
+                                                <profile-address/>
                                             </div>
                                         </div>
-                                        <!-- Single Tab Content End -->
-                                        <!-- Single Tab Content Start -->
+                                      
                                         <div class="tab-pane fade" id="account-info" role="tabpanel"
                                             :class="{ 'show active': isActive === 'Account Details' }">
                                             <div class="myaccount-content">
                                                 <h3>Account Details</h3>
                                                 <lazy-profile-account-detail/>
                                             </div>
-                                        </div> <!-- Single Tab Content End -->
+                                        </div>
                                     </div>
-                                </div> <!-- My Account Tab Content End -->
+                                </div> 
                             </div>
-                        </div> <!-- My Account Page End -->
+                        </div> 
                     </div>
                 </div>
             </div>

@@ -3,12 +3,18 @@ import { storeToRefs } from 'pinia';
 import { useModalStore } from '~~/store/modal';
 import { useCartStore } from '~~/store/cart';
 import { CartItem } from '~~/types/product';
+import { onClickOutside } from '@vueuse/core'
 // import { useToast } from 'vue-toastification';
 
 const { product } = storeToRefs(useModalStore());
 const { addToCart, addToWishlist } = useCartStore();
 const { remove } = useModalStore();
 const isOpenModal = ref(false);
+const dialogRef = ref<HTMLElement | null>(null);
+
+onClickOutside(dialogRef, () => {
+    remove();
+});
 
 const handleCloseModal = () => {
     isOpenModal.value = false;
@@ -58,7 +64,7 @@ const handleAddToCart = () => {
 <template>
     <Teleport to="body">
         <div class="modal fade " :class="{ show: isOpenModal }" v-if="product !== null">
-            <div class="modal-dialog">
+            <div class="modal-dialog" ref="dialogRef">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" aria-label="Close" @click="handleCloseModal"><span
@@ -71,7 +77,6 @@ const handleAddToCart = () => {
                                     <div id="pro-1" class="tab-pane fade show active">
                                         <img :src="product.image" alt="Big image">
                                     </div>
-
                                 </div>
                             </div>
                             <div class="col-lg-7 col-md-6 col-12 col-sm-12">
@@ -149,7 +154,7 @@ const handleAddToCart = () => {
                                                     class="fa-light fa-heart"></i></button>
                                             <button title="Add to Compare"><i
                                                     class="fa-duotone fa-arrows-rotate"></i></button>
-                                            <button class="social" title="Social" ><i
+                                            <button class="social" title="Social"><i
                                                     class="fa-light fa-share"></i></button>
                                         </div>
                                     </div>

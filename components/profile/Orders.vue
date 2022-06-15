@@ -24,14 +24,16 @@ const { data } = defineProps({
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for=" (item,n) in data" :key="item.id">
-                        <td>{{n+1}}</td>
-                        <td>{{new Date(item.created_at).toISOString()}}</td>
-                        <td>Pending</td>
-                        <td>${{item.total}}</td>
-                        <td><a href="cart.html" class="check-btn sqr-btn ">View</a></td>
+                    <tr v-for=" (item, n) in data" :key="item.id">
+                        <td>{{ n + 1 }}</td>
+                        <td>{{ new Date(item.created_at).toISOString() }}</td>
+                        <td>
+                            <p :class="`${item.status==='Pending'?'text-primary':'text-secondary'}`">{{ item.status }}</p>
+                        </td>
+                        <td>${{ item.total }}</td>
+                        <td><button class="check-btn sqr-btn btn btn-warning ">Cancel</button></td>
                     </tr>
-                    
+
                 </tbody>
             </table>
         </div>

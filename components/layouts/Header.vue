@@ -4,10 +4,18 @@ import { useCartStore } from '~~/store/cart';
 
 const isOpenSearch = useState('search-close', () => false);
 const isOpenCart = useState('cart-close', () => false);
+const searchKey = ref('');
+const router = useRouter()
 
 const headerRef = ref<HTMLElement | null>(null)
 const onCloseCart = () => {
     isOpenCart.value = false
+}
+const handleSearch = () => {
+    if (searchKey.value.length > 0) {
+        navigateTo('/shop?q=' + searchKey.value)
+    }
+    console.log(searchKey.value)
 }
 const isOpenMobileSidebar = useState('false', () => false);
 const { getCount, getCountWishlist } = storeToRefs(useCartStore())
@@ -104,9 +112,10 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                                             <i class="fa-light fa-magnifying-glass"></i>
                                         </a>
                                         <div class="search-wrap-1 " :class="`${isOpenSearch ? 'open' : ''}`">
-                                            <form action="#">
-                                                <input placeholder="Search products…" type="text">
-                                                <button class="button-search"><i class="icon-magnifier"></i></button>
+                                            <form action="#" @submit.prevent="handleSearch">
+                                                <input placeholder="Search products…" type="text" v-model="searchKey">
+                                                <button class="button-search" type="submit"><i
+                                                        class="fa-light fa-magnifying-glass"></i></button>
                                             </form>
                                         </div>
                                     </div>
@@ -115,13 +124,13 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                                     </div>
                                     <div class="same-style-2">
                                         <NuxtLink to="/Wish"><i class="fa-light fa-heart"></i><span
-                                                class="pro-count red"
-                                                v-if="getCountWishlist>0">0{{getCountWishlist}}</span></NuxtLink>
+                                                class="pro-count red" v-if="getCountWishlist > 0">0{{ getCountWishlist
+                                                }}</span></NuxtLink>
                                     </div>
                                     <div class="same-style-2 header-cart">
                                         <a class="cart-active" href="#" @click="isOpenCart = !isOpenCart">
                                             <i class="fa-light fa-cart-arrow-down"></i><span class="pro-count red"
-                                                v-if="getCount>0">0{{ getCount }}</span>
+                                                v-if="getCount > 0">0{{ getCount }}</span>
                                         </a>
                                     </div>
                                 </div>

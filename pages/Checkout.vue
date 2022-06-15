@@ -121,7 +121,6 @@ const handlePlaceOrder = async () => {
     if (isLoggedIn.value) {
         const { data: Order, error } = await client.from('Order').insert({
             user_id: user.value.id,
-            // items: [...Items],just contains the id of the item
             items: Items.map(item => {
                 return {
                     item_id: item.id,

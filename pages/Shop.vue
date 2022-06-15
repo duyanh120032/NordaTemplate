@@ -2,7 +2,12 @@
 <script setup lang="ts">
 
 const client = useSupabaseClient()
+const route = useRoute()
+
+const { q } = route.query || {}
+
 const viewMode = ref('grid');
+
 
 const { data } = await useAsyncData('products', async () => {
     const { data } = await client.from('Product').select('*').order('id')
@@ -26,7 +31,7 @@ const { data: colors } = await useAsyncData('colors', async () => {
     })
     return _colors
 })
-const {data:sizes} = await useAsyncData('sizes', async () => {
+const { data: sizes } = await useAsyncData('sizes', async () => {
     const { data } = await client.from('Product').select('sizes')
     let _sizes = []
     data.forEach(item => {
@@ -61,7 +66,7 @@ const filerBySize = (size: string) => {
 // pagination
 const catFilter = ref('');
 const viewOptions = [
-    8, 12, 15, 20, 9999
+    9, 12, 15, 20, 9999
 ]
 const end = ref(0)
 const start = ref(0)
@@ -73,6 +78,11 @@ const totalPages = computed(() => {
 const sortBy = ref('');
 const searchKeyword = ref<string>('')
 const filterByPrice = ref('')
+watchEffect(() => {
+    if (q && typeof q === 'string') {
+        searchKeyword.value = q
+    }
+})
 
 
 const ProductData = computed(() => {
@@ -80,11 +90,13 @@ const ProductData = computed(() => {
     start.value = (currentPage.value - 1) * perPage.value;
     end.value = currentPage.value * perPage.value;
 
+    let sortedData = data.value
+
     if (catFilter.value.length > 0) {
-        return data.value.filter(product => product.category.includes(catFilter.value))
+        sortedData = data.value.filter(product => product.category.includes(catFilter.value))
     }
     // sort
-    let sortedData = data.value.slice(start.value, end.value).sort((a, b) => {
+    sortedData = data.value.slice(start.value, end.value).sort((a, b) => {
         if (sortBy.value === 'name') {
             return a.name > b.name ? 1 : -1;
         } else {
@@ -236,13 +248,14 @@ const onChangePage = (n) => {
                                 <h4 class="sidebar-widget-title">Size </h4>
                                 <div class="sidebar-widget-list">
                                     <ul>
-                                        <li v-for="size in sizes" :key="size ">
+                                        <li v-for="size in sizes" :key="size">
                                             <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value="" @change="filerBySize(size)"> <p >{{size}} <span>4</span> </p>
+                                                <input type="checkbox" value="" @change="filerBySize(size)">
+                                                <p>{{ size }} <span>4</span> </p>
                                                 <span class="checkmark"></span>
                                             </div>
                                         </li>
-        
+
                                     </ul>
                                 </div>
                             </div>
