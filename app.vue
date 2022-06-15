@@ -1,8 +1,9 @@
 <template>
   <div class="main-wrapper">
-    <Header />
+   <LayoutsHeader/>
     <NuxtPage />
-    <Footer />
+    <ModalProduct/>
+    <LayoutsFooter/>
   </div>
 </template>
 <script setup lang="ts">

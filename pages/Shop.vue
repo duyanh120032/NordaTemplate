@@ -26,6 +26,19 @@ const { data: colors } = await useAsyncData('colors', async () => {
     })
     return _colors
 })
+const {data:sizes} = await useAsyncData('sizes', async () => {
+    const { data } = await client.from('Product').select('sizes')
+    let _sizes = []
+    data.forEach(item => {
+        let i = 0
+        item.sizes.forEach(size => {
+            if (!_sizes.includes(size)) {
+                _sizes.push(size)
+            }
+        })
+    })
+    return _sizes
+})
 // filter by color
 const selectedColors = ref<string[]>([])
 const filerByColor = (color: string) => {
@@ -33,6 +46,15 @@ const filerByColor = (color: string) => {
         selectedColors.value = selectedColors.value.filter(item => item !== color)
     } else {
         selectedColors.value.push(color)
+    }
+}
+// filter by size
+const selectedSizes = ref<string[]>([])
+const filerBySize = (size: string) => {
+    if (selectedSizes.value.includes(size)) {
+        selectedSizes.value = selectedSizes.value.filter(item => item !== size)
+    } else {
+        selectedSizes.value.push(size)
     }
 }
 
@@ -81,6 +103,14 @@ const ProductData = computed(() => {
         perPage.value = viewOptions[viewOptions.length - 2]
         sortedData = sortedData.filter(product => {
             return selectedColors.value.every(color => product.colors.includes(color))
+        })
+
+    }
+    // filter by size
+    if (selectedSizes.value.length > 0) {
+        perPage.value = viewOptions[viewOptions.length - 2]
+        sortedData = sortedData.filter(product => {
+            return selectedSizes.value.every(size => product.sizes.includes(size))
         })
 
     }
@@ -203,59 +233,16 @@ const onChangePage = (n) => {
                                 </div>
                             </div>
                             <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
-                                <h4 class="sidebar-widget-title">Refine By </h4>
-                                <div class="sidebar-widget-list">
-                                    <ul>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox"> <a href="#">On Sale <span>4</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">New <span>5</span></a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">In Stock <span>6</span>
-                                                </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
                                 <h4 class="sidebar-widget-title">Size </h4>
                                 <div class="sidebar-widget-list">
                                     <ul>
-                                        <li>
+                                        <li v-for="size in sizes" :key="size ">
                                             <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XL <span>4</span> </a>
+                                                <input type="checkbox" value="" @change="filerBySize(size)"> <p >{{size}} <span>4</span> </p>
                                                 <span class="checkmark"></span>
                                             </div>
                                         </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">L <span>5</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">SM <span>6</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="sidebar-widget-list-left">
-                                                <input type="checkbox" value=""> <a href="#">XXL <span>7</span> </a>
-                                                <span class="checkmark"></span>
-                                            </div>
-                                        </li>
+        
                                     </ul>
                                 </div>
                             </div>

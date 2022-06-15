@@ -131,10 +131,10 @@ watch(selectedQuantity, (val) => {
                                     <a title="Add to Cart" href="#" @click="handleAddToCart">Add To Cart </a>
                                 </div>
                                 <div class="pro-details-action">
-                                    <a title="Add to Wishlist" href="#" @click="handleAddToWishlist"><i
-                                            class="fa-light fa-heart"></i></a>
-                                    <a title="Add to Compare" href="#"><i class="fa-duotone fa-arrows-rotate"></i></a>
-                                    <a class="social" title="Social" href="#"><i class="fa-light fa-share"></i></a>
+                                    <button title="Add to Wishlist"  @click="handleAddToWishlist"><i
+                                            class="fa-light fa-heart"></i></button>
+                                    <button title="Add to Compare" ><i class="fa-duotone fa-arrows-rotate"></i></button>
+                                    <button class="social" title="Social" ><i class="fa-light fa-share"></i></button>
                                     <div class="product-dec-social">
                                         <a class="facebook" title="Facebook" href="#"><i
                                                 class="icon-social-facebook"></i></a>

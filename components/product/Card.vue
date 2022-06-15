@@ -2,6 +2,9 @@
 import { useCartStore } from '@/store/cart'
 import { PropType } from 'vue';
 import { CartItem, Product, ProductDetail } from '~~/types/product';
+import { useModalStore } from '~~/store/modal';
+// import { useToast } from 'vue-toastification';
+
 
 const { data } = defineProps({
     data: {
@@ -28,6 +31,11 @@ const handleAddToWishlist = (data: ProductDetail) => {
     }
     addToWishlist(_data as unknown as CartItem)
 }
+
+const modal = useModalStore();
+const handleQuickView = () => {
+    modal.set(data)
+}
 </script>
 
 <template>
@@ -40,7 +48,7 @@ const handleAddToWishlist = (data: ProductDetail) => {
                 <div class="product-action-2 tooltip-style-2">
                     <button title="Wishlist" @click="handleAddToWishlist(data)"><i
                             class="fa-light fa-heart"></i></button>
-                    <button title="Quick View"><i class="fa-duotone fa-arrows-maximize"></i></button>
+                    <button title="Quick View" @click="handleQuickView"><i class="fa-duotone fa-arrows-maximize"></i></button>
                     <button title="Compare"><i class="fa-duotone fa-arrows-rotate"></i></button>
                 </div>
             </div>

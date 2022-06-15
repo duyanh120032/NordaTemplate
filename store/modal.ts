@@ -1,5 +1,20 @@
-import {defineStore} from 'pinia'
+import { ProductDetail } from './../types/product.d';
+import { defineStore } from "pinia";
+import { Product } from "~~/types/product";
 
-const store = defineStore('ProductModal',{
-    state: {} as any,
-})
+export const useModalStore = defineStore("ProductModal", {
+  state: () => {
+    return {
+      product: null as ProductDetail,
+    };
+  },
+
+  actions: {
+    set(product: Product) {
+      this.product = product;
+    },
+    remove() {
+      this.product = null ;
+    },
+  },
+});
