@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { useCartStore } from "@/store/cart";
 import { useToast } from "vue-toastification";
+definePageMeta({
+    middleware: "auth"
+})
 
 const toast = useToast();
 const user = useSupabaseUser();
@@ -10,6 +13,7 @@ const isOpenApplyCoupon = ref(false);
 const isOpenLogin = ref(false);
 const isPendingLogin = ref(false);
 const discount = ref(0);
+
 
 const coupon = ref("");
 const handleApplyCoupon = async () => {

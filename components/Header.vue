@@ -144,8 +144,8 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                                     <NuxtLink to="/signin"><i class="fa-light fa-user"></i></NuxtLink>
                                 </div>
                                 <div class="same-style-2">
-                                    <a href="wishlist.html"><i class="fa-light fa-heart"></i><span
-                                            class="pro-count red">03</span></a>
+                                    <NuxtLink to="/wish"><i class="fa-light fa-heart"></i><span
+                                            class="pro-count red">03</span></NuxtLink>
                                 </div>
                                 <div class="same-style-2 header-cart">
                                     <a class="cart-active" href="#" @click="isOpenCart = !isOpenCart">

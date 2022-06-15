@@ -1,5 +1,14 @@
 <script setup lang="ts">
+import { tryOnBeforeMount } from "@vueuse/shared";
 import { useToast } from "vue-toastification";
+
+tryOnBeforeMount(() => {
+    const router = useRouter();
+    const user = useSupabaseUser();
+    if(user.value) {
+        router.push("/profile");
+    }
+});
 
 const toast = useToast();
 const isActive = ref('login');
@@ -16,9 +25,7 @@ const loginUser = reactive({
     password: '',
     error: ''
 });
-definePageMeta({
-    middleware: 'auth'
-})
+
 
 const handleRegister = async () => {
     if (newUser.password !== newUser.confirmPassword) {
@@ -83,11 +90,11 @@ const handleSendLinkReset = async () => {
                                 <div id="lg1" class="tab-pane " :class="{ 'active': isActive === 'login' }">
                                     <div class="login-form-container">
                                         <div class="login-register-form">
-                                            <form  @submit.prevent="handleLogin">
-                                                <input type="email" name="email" placeholder="Email"
+                                            <form @submit.prevent="handleLogin">
+                                                <input type="email" name="email" placeholder="Email" autocomplete="email"
                                                     v-model="loginUser.email">
                                                 <input type="password" name="user-password" placeholder="Password"
-                                                    v-model="loginUser.password">
+                                                    v-model="loginUser.password" autocomplete="current password">
                                                 <span class="text-danger" v-if="loginUser.error">{{ loginUser.error
                                                 }}</span>
                                                 <div class="button-box">
@@ -107,13 +114,13 @@ const handleSendLinkReset = async () => {
                                         <div class="login-register-form">
                                             <form action="#" method="post" @submit.prevent="handleRegister">
                                                 <input type="email" name="email" placeholder="Email"
-                                                    v-model="newUser.email">
+                                                    v-model="newUser.email" autocomplete="additional-email">
                                                 <span v-if="newUser.error" class="text-danger">{{ newUser.error
                                                 }}</span>
                                                 <input type="password" name="user-password" placeholder="Password"
-                                                    v-model="newUser.password">
+                                                    v-model="newUser.password" autocomplete="bday-month">
                                                 <input name="confirmPassword" placeholder="confirmPassword"
-                                                    type="password" v-model="newUser.confirmPassword">
+                                                    type="password" v-model="newUser.confirmPassword" autocomplete="current-password">
                                                 <div class="button-box">
                                                     <button type="submit">Register</button>
                                                 </div>

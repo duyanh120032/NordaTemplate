@@ -22,7 +22,6 @@
     "sass": "^1.52.3",
     "scss": "^0.2.4",
     "swiper": "^8.2.2",
-    "vue-slick-carousel": "^1.0.6",
     "vue-toastification": "next"
   }
 }

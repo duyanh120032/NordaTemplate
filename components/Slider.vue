@@ -11,15 +11,15 @@ const { data } = defineProps({
 
 const isActive = ref(0);
 // autoplay
-// const changeSlide = setInterval(() => {
-//     isActive.value++;
-//     if (isActive.value === 2) {
-//         isActive.value = 0;
-//     }
-// }, 3000);
-// onBeforeUnmount(() => {
-//     clearInterval(changeSlide);
-// });
+const changeSlide = setInterval(() => {
+    isActive.value++;
+    if (isActive.value === 2) {
+        isActive.value = 0;
+    }
+}, 3000);
+onBeforeUnmount(() => {
+    clearInterval(changeSlide);
+});
 const handleNextSlide = () => {
     isActive.value++;
     if (isActive.value === data.length) {
@@ -86,9 +86,32 @@ const handlePrevSlide = () => {
 
 
 
+
     &>div {
         margin: 0 auto;
-        animation: shortfadeInUp 2s ease-in-out;
+        overflow: clip;
+
+        h4.animated {
+            animation: shortfadeInUp 1s ease-in-out 0.5s;
+        }
+
+        h1.animated {
+            animation: shortfadeInUp 1s ease-in-out 1s;
+        }
+
+        p.animated {
+            animation: shortfadeInUp 1s ease-in-out 1.5s;
+        }
+
+        a.animated {
+            animation: shortfadeInUp 1s ease-in-out 2s;
+        }
+
+        img.animated {
+            animation: shortfadeInUp 1s ease-in-out ;
+        }
+
+
 
         &.no-active {
             display: none;
@@ -98,6 +121,12 @@ const handlePrevSlide = () => {
 
 .slider-area {
     position: relative;
+
+    &:hover{
+        .next-btn, .prev-btn {
+            opacity: 0.7;
+        }
+    }
 
     & .dots {
         position: absolute;
@@ -117,8 +146,9 @@ const handlePrevSlide = () => {
         top: 50%;
         transform: translateY(-50%);
         z-index: 1;
+        border-radius: 50%;
         background: #fff;
-        border-radius: 5px;
+        opacity: 0;
         width: 40px;
         height: 40px;
         text-align: center;

@@ -39,16 +39,28 @@ const handleAddToCart = (data: CartItem) => {
         </td>
         <td class="product-subtotal">${{ data.price * data.quantity }}</td>
         <td class="product-remove">
-            <button @click="handleAddToCart(data)">Add To Cart</button>
+            <button @click="handleAddToCart(data)" class="btn btn-style-1">Add To Cart</button>
         </td>
     </tr>
 </template>
 
 
 
-<style scoped>
+<style scoped lang="scss">
 img {
     width: 100px;
     height: 100px;
+}
+.btn-style-1  {
+	background-color: #000;
+	color: #fff;
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 600;
+
+    &:hover {
+       
+        color: rgb(255, 0, 0);
+    }
 }
 </style>

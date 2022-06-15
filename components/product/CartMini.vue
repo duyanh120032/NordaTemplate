@@ -1,10 +1,12 @@
 <script setup lang="ts">import { PropType } from 'vue';
 import { CartItem } from '~~/types/product';
+import { useCartStore } from '~~/store/cart';
 
-const {data} = defineProps({
+const { removeCartItem } = useCartStore();
+const { data } = defineProps({
     data: {
         type: Object as PropType<CartItem>,
-        default: () => ({})
+        default: () => ({} as CartItem)
     }
 })
 </script>
@@ -16,10 +18,12 @@ const {data} = defineProps({
                 <NuxtLink :to="`/detail?id=${data.id}`"><img :src="data.image" alt="Product "></NuxtLink>
             </div>
             <div class="cart-title">
-                <h4><NuxtLink :to="`/detail?id=${data.id}`">{{data.title}}</NuxtLink></h4>
-                <span> {{data.quantity}} × ${{data.price}} </span>
+                <h4>
+                    <NuxtLink :to="`/detail?id=${data.id}`">{{ data.title }}</NuxtLink>
+                </h4>
+                <span> {{ data.quantity }} × ${{ data.price }} </span>
             </div>
-            <div class="cart-delete">
+            <div class="cart-delete" @click="removeCartItem(data.id)">
                 <a href="#">×</a>
             </div>
         </li>
