@@ -112,7 +112,7 @@ const isActive = ref('des-details1')
                                 <h2>1 review for Sleeve Button Cowl Neck</h2>
                                 <div class="single-review">
                                     <div class="review-img">
-                                        <img src="assets/images/product-details/client-1.png" alt="">
+                                         <img src="assets/images/product-details/client-1.png" alt="">
                                     </div>
                                     <div class="review-content">
                                         <div class="review-top-wrap">

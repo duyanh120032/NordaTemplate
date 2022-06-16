@@ -28,7 +28,7 @@ const handleLogout = async () => {
     await client.auth.signOut()
     router.push('/')
 }
-const {data:orders} = await client.from('Order').select('*').eq('user_id', user.value.id)
+const {data:orders} = await client.from('Orders').select('*').eq('user_email', user.value.email)
 
 
 </script>

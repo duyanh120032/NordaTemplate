@@ -7,5 +7,5 @@ export interface Order {
   shipping_cost: number;
   shipping_data: object;
   user_id: string;
-  status?: string;
+  status: string;
 }

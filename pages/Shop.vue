@@ -1,11 +1,13 @@
         
 <script setup lang="ts">
 
+useHead({
+    title: 'Norda Ecommerce Shop',
+
+});
 const client = useSupabaseClient()
 const route = useRoute()
-
 const { q } = route.query || {}
-
 const viewMode = ref('grid');
 
 

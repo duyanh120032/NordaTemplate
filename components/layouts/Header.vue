@@ -83,7 +83,7 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                         <div class="row align-items-center">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                    <NuxtLink to="/"><img src="assets/images/logo/logo.png" alt="logo"></NuxtLink>
+                                   <NuxtLink to="/"><img src="assets/images/logo/logo.png" alt="logo"></NuxtLink>
                                 </div>
                             </div>
                             <div class="col-xl-8 col-lg-7">
