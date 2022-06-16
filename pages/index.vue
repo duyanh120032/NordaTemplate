@@ -1,7 +1,7 @@
 <script setup lang="ts">import { Product } from '~~/types/product'
 
 const client = useSupabaseClient()
-const { data: sliderProduct } = await client.from<Product>('Product').select('*').range(0, 2)
+const { data: sliderProduct } = await client.from<Product>('Product').select('*').range(0, 3)
 
 
 

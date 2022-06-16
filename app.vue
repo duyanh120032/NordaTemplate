@@ -7,6 +7,16 @@
   </div>
 </template>
 <script setup lang="ts">
+const route = useRoute()
+watch(route, (newVal, oldVal) => {
+  if (newVal.path === oldVal.path) {
+    window.scrollTo(0, 0)
+    useHead({
+      title: `Norda Ecommerce | ${String(newVal.name)}`,
+    });
+  }
+})
+
 
 // useHead({
 //   title: 'Norda Ecommerce Pinia',

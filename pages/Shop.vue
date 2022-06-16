@@ -3,7 +3,6 @@
 
 useHead({
     title: 'Norda Ecommerce Shop',
-
 });
 const client = useSupabaseClient()
 const route = useRoute()

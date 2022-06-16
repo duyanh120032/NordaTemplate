@@ -8,9 +8,18 @@ const { isOpened } = defineProps({
 })
 const emits = defineEmits(['close'])
 const mobileSidebar = ref<HTMLElement | null>(null)
+const searchKeyword = ref<string>('')
 onClickOutside(mobileSidebar, () => {
     emits('close')
 })
+const handleSubmit = () => {
+
+    if (searchKeyword.value.length > 0) {
+        emits('close')
+        
+        navigateTo('/shop?q=' + searchKeyword.value)
+    }
+}
 
 </script>
 
@@ -25,8 +34,8 @@ onClickOutside(mobileSidebar, () => {
                     </p>
                 </div>
                 <div class="mobile-search mobile-header-padding-border-1">
-                    <form class="search-form" action="#">
-                        <input type="text" placeholder="Search here…">
+                    <form class="search-form" action="#" @submit.prevent="handleSubmit">
+                        <input type="text" placeholder="Search here…" v-model="searchKeyword">
                         <button class="button-search"><i class="icon-magnifier"></i></button>
                     </form>
                 </div>
@@ -34,9 +43,11 @@ onClickOutside(mobileSidebar, () => {
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
-                            <li class="menu-item-has-children"><NuxtLink to="/">Home</NuxtLink>
+                            <li class="menu-item-has-children">
+                                <NuxtLink to="/">Home</NuxtLink>
                             </li>
-                            <li class="menu-item-has-children "><NuxtLink to="/shop">shop</NuxtLink>
+                            <li class="menu-item-has-children ">
+                                <NuxtLink to="/shop">shop</NuxtLink>
                             </li>
                             <li><a href="contact.html">Contact us</a></li>
                         </ul>

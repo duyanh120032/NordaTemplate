@@ -1,8 +1,9 @@
-<script setup lang="ts">
+<script setup lang="ts">import { Order } from '~~/types/Order';
+
 const client = useSupabaseClient()
 const trackState = reactive({
     email: '',
-    result: [],
+    result: null as null | Order[],
     loading: false,
     error: null,
 })
@@ -12,13 +13,12 @@ const handleSubmit = async () => {
     }
     trackState.loading = true
     trackState.error = null
-    try {
-        const result = await client.from('Order').select('*').eq('shipping_data.Email', 'email')
-        console.log("🚀 ~ file: TrackOrder.vue ~ line 17 ~ handleSubmit ~ result", result)
-        trackState.result = result.data
-    } catch (error) {
-        trackState.error = error.message
-    }
+    const { data } = await client.from<Order>('Orders').select('*').eq('user_email', trackState.email)
+    trackState.result = data
+}
+const handleCancelOrder = async (id: string | number) => {
+    await client.from<Order>('Orders').delete().eq('id', id)
+
 }
 </script>
 
@@ -26,6 +26,36 @@ const handleSubmit = async () => {
     <div>
         <div class="order-tracking-area pt-110 pb-120">
             <div class="container">
+                <div class="myaccount-table table-responsive text-center" v-if="trackState.result">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Order</th>
+                                <th>Code</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for=" (item, n) in trackState.result" :key="item.id">
+                                <td>{{ n + 1 }}</td>
+                                <td>{{ item.id }}</td>
+                                <td>{{ new Date(item.created_at).toISOString() }}</td>
+                                <td>
+                                    <p
+                                        :class="`${item.status === 'Pending' ? 'text-primary' : item.status === 'Cancelled' ? 'text-danger' : 'text-secondary'}`">
+                                        {{ item.status }}</p>
+                                </td>
+                                <td>${{ item.total }}</td>
+                                <td><button class="check-btn sqr-btn btn btn-warning "
+                                        v-if="item.status !== 'Cancelled'"
+                                        @click="handleCancelOrder(item.id)">Cancel</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div class="row">
                     <div class="col-xl-6 col-lg-8 col-md-10 ml-auto mr-auto">
                         <div class="order-tracking-content">
@@ -36,8 +66,8 @@ const handleSubmit = async () => {
                                 <form action="#" @submit.prevent="handleSubmit">
                                     <div class="sin-order-tracking">
                                         <label>Billing Email</label>
-                                        <input type="email" placeholder="Email you used during checkout" autocomplete="email"
-                                            v-model="trackState.email">
+                                        <input type="email" placeholder="Email you used during checkout"
+                                            autocomplete="email" v-model="trackState.email">
                                     </div>
                                     <div class="order-track-btn">
                                         <button class="btn" type="submit">Track Now</button>
