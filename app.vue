@@ -12,33 +12,10 @@ watch(route, (newVal, oldVal) => {
   if (newVal.path === oldVal.path) {
     window.scrollTo(0, 0)
     useHead({
-      title: `Norda Ecommerce | ${String(newVal.name)}`,
+      title: `Norda Ecommerce | ${String(newVal.name).toUpperCase()}`,
     });
   }
 })
-
-
-// useHead({
-//   title: 'Norda Ecommerce Pinia',
-
-//   link: [
-//     {
-//       rel: 'stylesheet',
-//       href: './assets/css/vendor/bootstrap.min.css'
-//     },
-//     {
-//       rel: 'stylesheet',
-//       href: './assets/scss/style.scss'
-//     },
-//   ],
-
-//   // script: [
-//   //   {
-//   //     src: './fontawesome.js'
-//   //   }
-//   // ]
-// })
-
 
 
 </script>

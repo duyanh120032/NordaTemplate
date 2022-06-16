@@ -1,19 +1,19 @@
         
 <script setup lang="ts">
-
-useHead({
-    title: 'Norda Ecommerce Shop',
-});
 const client = useSupabaseClient()
 const route = useRoute()
+
+// get query params
 const { q } = route.query || {}
-const viewMode = ref('grid');
 
+const viewMode = ref('grid'); // grid | list
 
+// get products
 const { data } = await useAsyncData('products', async () => {
     const { data } = await client.from('Product').select('*').order('id')
     return data
-})
+}) 
+// get Category
 const { data: Categories } = await useAsyncData('categories', async () => {
     const { data } = await client.from('Category').select('*')
     return data

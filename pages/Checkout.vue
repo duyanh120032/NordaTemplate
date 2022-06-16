@@ -14,7 +14,7 @@ const isOpenLogin = ref(false);
 const isPendingLogin = ref(false);
 const discount = ref(0);
 const coupon = ref("");
-const { getItems: Items, getTotal } = useCartStore();
+const { getItems: Items, getTotal, $reset } = useCartStore();
 const cities = [
     'Hà nội',
     'TP. Hồ Chí Minh',
@@ -85,10 +85,7 @@ watchEffect(() => {
         // shippingData.Address = user.value.user_metadata.address;
     }
 });
-const handleLogout = async () => {
-    await client.auth.signOut();
-    isLoggedIn.value = false;
-}
+
 const shippingCost = computed(() => {
     const total = getTotal;
     if (total > 100) {
@@ -137,6 +134,7 @@ const handlePlaceOrder = async () => {
             toast.error(error.message)
         } else {
             toast.success('Order placed')
+            useCartStore().$reset();
             // router.push('/orders')
         }
     }
