@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { PropType } from 'vue';
+import { ProductDetail } from '~~/types/product';
+
 const details = [
     {
         name: 'Description',
@@ -16,6 +19,12 @@ const details = [
     }
 ]
 const isActive = ref('des-details1')
+const { data } = defineProps({
+    data: {
+        type: Object as PropType<ProductDetail>,
+        default: () => ({})
+    }
+})
 
 </script>
 
@@ -25,18 +34,16 @@ const isActive = ref('des-details1')
             <div class="row">
                 <div class="col-lg-12">
                     <div class="dec-review-topbar nav mb-45">
-                        <a :class="{'active' : isActive === des.path}" @click="isActive = des.path" v-for="(des,idx) in details " :key="des.path">{{des.name}}</a>
-                        
+                        <a :class="{ 'active': isActive === des.path }" @click="isActive = des.path"
+                            v-for="(des, idx) in details " :key="des.path">{{ des.name }}</a>
+
                     </div>
                     <div class="tab-content dec-review-bottom">
-                        <div id="des-details1" class="tab-pane " :class="{active : isActive=== 'des-details1' }">
+                        <div id="des-details1" class="tab-pane " :class="{ active: isActive === 'des-details1' }">
                             <div class="description-wrap">
-                                <p>Crafted in premium watch quality, fenix Chronos is the first Garmin timepiece to
-                                    combine a
-                                    durable metal case with integrated performance GPS to support navigation and sport.
-                                    In the
-                                    tradition of classic tool watches it features a tough design and a set of modern
-                                    meaningful tools.</p>
+                                <p>
+                                    {{data.desc}}
+                                </p>
                                 <p> advanced performance metrics for endurance sports, Garmin quality navigation
                                     features and
                                     smart notifications. In fenix Chronos top-tier performance meets sophisticated
@@ -51,7 +58,7 @@ const isActive = ref('des-details1')
                                     mechanism.</p>
                             </div>
                         </div>
-                        <div id="des-details2" class="tab-pane" :class="{active : isActive=== 'des-details2' }">
+                        <div id="des-details2" class="tab-pane" :class="{ active: isActive === 'des-details2' }">
                             <div class="specification-wrap table-responsive">
                                 <table>
                                     <tbody>
@@ -87,7 +94,7 @@ const isActive = ref('des-details1')
                                 </table>
                             </div>
                         </div>
-                        <div id="des-details3" class="tab-pane" :class="{active : isActive=== 'des-details3' }">
+                        <div id="des-details3" class="tab-pane" :class="{ active: isActive === 'des-details3' }">
                             <div class="specification-wrap table-responsive">
                                 <table>
                                     <tbody>
@@ -107,12 +114,12 @@ const isActive = ref('des-details1')
                                 </table>
                             </div>
                         </div>
-                        <div id="des-details4" class="tab-pane" :class="{active : isActive=== 'des-details4' }">
+                        <div id="des-details4" class="tab-pane" :class="{ active: isActive === 'des-details4' }">
                             <div class="review-wrapper">
                                 <h2>1 review for Sleeve Button Cowl Neck</h2>
                                 <div class="single-review">
                                     <div class="review-img">
-                                         <img src="assets/images/product-details/client-1.png" alt="">
+                                        <img src="assets/images/product-details/client-1.png" alt="">
                                     </div>
                                     <div class="review-content">
                                         <div class="review-top-wrap">

@@ -5,7 +5,6 @@ import { useCartStore } from '~~/store/cart';
 const isOpenSearch = useState('search-close', () => false);
 const isOpenCart = useState('cart-close', () => false);
 const searchKey = ref('');
-const router = useRouter()
 
 const headerRef = ref<HTMLElement | null>(null)
 const onCloseCart = () => {
@@ -83,7 +82,7 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                         <div class="row align-items-center">
                             <div class="col-xl-2 col-lg-2">
                                 <div class="logo">
-                                   <NuxtLink to="/"><img src="assets/images/logo/logo.png" alt="logo"></NuxtLink>
+                                    <NuxtLink to="/"><img src="assets/images/logo/logo.png" alt="logo"></NuxtLink>
                                 </div>
                             </div>
                             <div class="col-xl-8 col-lg-7">
@@ -142,9 +141,9 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                     <div class="row align-items-center">
                         <div class="col-5">
                             <div class="mobile-logo">
-                                <a href="index.html">
+                                <NuxtLink tp="/">
                                     <img alt="" src="assets/images/logo/logo.png">
-                                </a>
+                                </NuxtLink>
                             </div>
                         </div>
                         <div class="col-7">
@@ -153,12 +152,15 @@ const { getCount, getCountWishlist } = storeToRefs(useCartStore())
                                     <NuxtLink to="/signin"><i class="fa-light fa-user"></i></NuxtLink>
                                 </div>
                                 <div class="same-style-2">
-                                    <NuxtLink to="/wish"><i class="fa-light fa-heart"></i><span
-                                            class="pro-count red">03</span></NuxtLink>
+                                    <NuxtLink to="/wish"><i class="fa-light fa-heart"></i><span class="pro-count red"
+                                            v-if="getCountWishlist > 0">0{{ getCountWishlist
+                                            }}</span></NuxtLink>
                                 </div>
                                 <div class="same-style-2 header-cart">
                                     <a class="cart-active" href="#" @click="isOpenCart = !isOpenCart">
-                                        <i class="fa-light fa-basket-shopping"></i><span class="pro-count red">02</span>
+                                        <i class="fa-light fa-basket-shopping"></i><span class="pro-count red"
+                                            v-if="getCount > 0">0{{ getCount
+                                            }}</span>
                                     </a>
                                 </div>
                                 <div class="same-style-2 main-menu-icon">

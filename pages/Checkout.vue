@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCartStore } from "@/store/cart";
 import { useToast } from "vue-toastification";
+import { Order } from "~~/types/Order";
 definePageMeta({
     middleware: "auth"
 })
@@ -48,6 +49,7 @@ const shippingData = reactive({
     Address: '',
     Address2: '',
     City: selectedCity.value,
+    CashMethod: '',
     Zip: '',
     note: '',
 })
@@ -104,17 +106,25 @@ const grandTotal = computed(() => {
     return _total + shippingCost.value;
 })
 const isChecked = computed(() => {
-    if (shippingData.FirstName.length > 0 && shippingData.LastName.length > 0 && shippingData.Email.length > 0 && shippingData.Phone.length > 0 && shippingData.Address.length > 0 && shippingData.City.length > 0 && shippingData.Zip.length > 0) {
+    if (shippingData.FirstName.length > 0 && shippingData.LastName.length > 0 && shippingData.Email.length > 0 && shippingData.Phone.length > 0){
         return true;
     }
     return false;
 })
+
 const handlePlaceOrder = async () => {
 
     if (!isChecked.value) {
         toast.error('Please fill all required fields')
         return
     }
+    // validate phone number
+    if (shippingData.Phone.length < 10) {
+        toast.error('Phone number is not valid')
+        return
+    }
+
+
     if (isLoggedIn.value) {
         const { data: Order, error } = await client.from('Orders').insert({
             user_email: user.value.email,
@@ -135,7 +145,8 @@ const handlePlaceOrder = async () => {
         } else {
             toast.success('Order placed')
             useCartStore().$reset();
-            // router.push('/orders')
+            console.log(Order)
+            navigateTo('/trackorder?code=' + Order[0].id)
         }
     }
 
@@ -309,38 +320,9 @@ const handlePlaceOrder = async () => {
                                 </div>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
-                                        <input id="payment_method_1" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method">
-                                        <label for="payment_method_1"> Direct Bank Transfer </label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference.</p>
-                                        </div>
-                                    </div>
-                                    <div class="pay-top sin-payment">
-                                        <input id="payment-method-2" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method">
-                                        <label for="payment-method-2">Check payments</label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference.</p>
-                                        </div>
-                                    </div>
-                                    <div class="pay-top sin-payment">
-                                        <input id="payment-method-3" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method">
+                                        <input id="payment-method-3" class="input-radio" type="radio" value="COD"
+                                            name="payment_method" v-model="shippingData.CashMethod">
                                         <label for="payment-method-3">Cash on delivery </label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>Make your payment directly into our bank account. Please use your Order
-                                                ID as the payment reference.</p>
-                                        </div>
-                                    </div>
-                                    <div class="pay-top sin-payment sin-payment-3">
-                                        <input id="payment-method-4" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method">
-                                        <label for="payment-method-4">PayPal <img alt=""
-                                                src="assets/images/icon-img/payment.png"><a href="#">What is
-                                                PayPal?</a></label>
                                         <div class="payment-box payment_method_bacs">
                                             <p>Make your payment directly into our bank account. Please use your Order
                                                 ID as the payment reference.</p>

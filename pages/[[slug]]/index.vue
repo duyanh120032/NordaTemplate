@@ -1,8 +1,6 @@
 <template>
    <div>
       <layouts-breadcrumb />
-      <product-detail/>
-      <product-description/>
-       
+      <product-detail/> 
    </div>
 </template>

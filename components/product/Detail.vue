@@ -58,8 +58,7 @@ watch(selectedQuantity, (val) => {
                                             alt="Imagae large">
                                     </a>
                                 </div>
-                                <a class="easyzoom-pop-up img-popup"
-                                    href="assets/images/product-details/b-large-1.jpg"><i
+                                <a class="easyzoom-pop-up img-popup" :href="product.image"><i
                                         class="fa-duotone fa-arrows-maximize"></i></a>
                             </div>
                         </div>
@@ -72,7 +71,6 @@ watch(selectedQuantity, (val) => {
                                     <div class="product-ratting">
                                         <i class="fa-duotone fa-star" v-for="n in 5" :key="n"
                                             :style="`${n <= 4 ? 'color: yellow;' : ''}`"></i>
-
                                     </div>
                                     <div class="product-digit">
                                         <span>5.0</span>
@@ -107,7 +105,8 @@ watch(selectedQuantity, (val) => {
                                         <li @click="selectedSize = size" v-for="size in product.sizes" :key="size"><a
                                                 :class="{ active: selectedSize === size }">{{
                                                         size
-                                                }}</a></li>
+                                                }}</a>
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -131,10 +130,10 @@ watch(selectedQuantity, (val) => {
                                     <a title="Add to Cart" href="#" @click="handleAddToCart">Add To Cart </a>
                                 </div>
                                 <div class="pro-details-action">
-                                    <button title="Add to Wishlist"  @click="handleAddToWishlist"><i
+                                    <button title="Add to Wishlist" @click="handleAddToWishlist"><i
                                             class="fa-light fa-heart"></i></button>
-                                    <button title="Add to Compare" ><i class="fa-duotone fa-arrows-rotate"></i></button>
-                                    <button class="social" title="Social" ><i class="fa-light fa-share"></i></button>
+                                    <button title="Add to Compare"><i class="fa-duotone fa-arrows-rotate"></i></button>
+                                    <button class="social" title="Social"><i class="fa-light fa-share"></i></button>
                                     <div class="product-dec-social">
                                         <a class="facebook" title="Facebook" href="#"><i
                                                 class="icon-social-facebook"></i></a>
@@ -152,5 +151,6 @@ watch(selectedQuantity, (val) => {
                 </div>
             </div>
         </div>
+        <product-description :data="product"/>
     </div>
 </template>

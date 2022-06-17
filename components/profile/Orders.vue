@@ -2,7 +2,7 @@
 import { PropType } from 'vue';
 import { useToast } from 'vue-toastification';
 import { Order } from '~~/types/Order';
-import { Product } from '~~/types/Product';
+import { CartItem, Product } from '~~/types/Product';
 
 
 
@@ -15,50 +15,8 @@ const { data } = defineProps({
         default: () => ({} as Order[]),
     }
 })
-// const { data: dataOrders } = await client.from('Orders').select('*')
 
 
-
-
-
-
-
-// const _data = itemsOrder.map(async (item) => {
-//     let newData=[]
-
-//     // Fetch Data Product   
-//     if(item.id){
-
-//         const { data: data } = await client.from('Product').select('*').eq('id', item.id).single()
-
-//         const dataProduct= data
-
-//         newData=[...newData, dataProduct.title]
-
-//     }
-//     return newData
-
-// }
-
-
-// // Map data item
-
-
-
-//     // return {
-//     //     ...Orders,
-//     //     items: order.items.map(async (item) => {
-
-//     //         console.log("🚀 ~ file: Orders.vue ~ line 24 ~ items:order.items.map ~ product", product)
-
-//     //         return {
-//     //             ...item,
-//     //             title: product.title,
-//     //         }
-//     //     })
-//     // }
-// )
-// console.log(_data);
 
 
 const handleCancelOrder = async (order: Order) => {
@@ -70,6 +28,10 @@ const handleCancelOrder = async (order: Order) => {
         return
     }
     toast.success('Order cancelled')
+}
+const handleViewOrder = (id: string | number) => {
+   navigateTo(`/trackorder?code=${id}`)
+
 }
 
 </script>
@@ -98,8 +60,11 @@ const handleCancelOrder = async (order: Order) => {
                                 {{ item.status }}</p>
                         </td>
                         <td>${{ item.total }}</td>
-                        <td><button class="check-btn sqr-btn btn btn-warning " v-if="item.status !== 'Cancelled'"
-                                @click="handleCancelOrder(item)">Cancel</button></td>
+                        <td><button class="check-btn sqr-btn btn btn-warning mr-3 " v-if="item.status !== 'Cancelled'"
+                                @click="handleCancelOrder(item)">Cancel</button>
+                            <button class="check-btn sqr-btn btn btn-success " v-if="item.status !== 'Cancelled'"
+                                @click="handleViewOrder(item.id)">View</button>
+                        </td>
                     </tr>
 
                 </tbody>
