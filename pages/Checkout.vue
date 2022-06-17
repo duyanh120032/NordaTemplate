@@ -145,7 +145,6 @@ const handlePlaceOrder = async () => {
         } else {
             toast.success('Order placed')
             useCartStore().$reset();
-            console.log(Order)
             navigateTo('/trackorder?code=' + Order[0].id)
         }
     }

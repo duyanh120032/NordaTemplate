@@ -2,13 +2,17 @@
 import { tryOnBeforeMount } from "@vueuse/shared";
 import { useToast } from "vue-toastification";
 
-tryOnBeforeMount(() => {
-    const router = useRouter();
-    const user = useSupabaseUser();
-    if (user.value) {
-        router.push("/profile");
-    }
-});
+// tryOnBeforeMount(() => {
+//     const router = useRouter();
+//     const user = useSupabaseUser();
+//     if (user.value) {
+//         router.push("/profile");
+//     }
+// });
+definePageMeta({
+    middleware: ['signin']
+})
+
 
 const toast = useToast();
 const isActive = ref('login');

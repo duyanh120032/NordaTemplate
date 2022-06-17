@@ -93,7 +93,7 @@ const {data:orders} = await client.from('Orders').select('*').eq('user_email', u
                                             :class="{ 'show active': isActive === 'Address' }">
                                             <div class="myaccount-content">
                                                 <h3>Billing Address</h3>
-                                                <profile-address/>
+                                                <profile-address :user="user"/>
                                             </div>
                                         </div>
                                       

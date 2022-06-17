@@ -12,7 +12,7 @@ const viewMode = ref('grid'); // grid | list
 const { data } = await useAsyncData('products', async () => {
     const { data } = await client.from('Product').select('*').order('id')
     return data
-}) 
+})
 // get Category
 const { data: Categories } = await useAsyncData('categories', async () => {
     const { data } = await client.from('Category').select('*')
@@ -73,9 +73,7 @@ const end = ref(0)
 const start = ref(0)
 const currentPage = ref(1);
 const perPage = ref(viewOptions[0]);
-const totalPages = computed(() => {
-    return Math.ceil(data.value.length / perPage.value) <= 0 ? 1 : Math.ceil(data.value.length / perPage.value);
-})
+
 const sortBy = ref('');
 const searchKeyword = ref<string>('')
 const filterByPrice = ref('')
@@ -94,10 +92,10 @@ const ProductData = computed(() => {
     let sortedData = data.value
 
     if (catFilter.value.length > 0) {
-        sortedData = data.value.filter(product => product.category.includes(catFilter.value))
+         sortedData = sortedData.filter(product => product.category.includes(catFilter.value))
     }
     // sort
-    sortedData = data.value.slice(start.value, end.value).sort((a, b) => {
+    sortedData = sortedData.slice(start.value, end.value).sort((a, b) => {
         if (sortBy.value === 'name') {
             return a.name > b.name ? 1 : -1;
         } else {
@@ -135,6 +133,9 @@ const ProductData = computed(() => {
         })
     }
     return sortedData;
+})
+const totalPages = computed(() => {
+    return Math.ceil(data.value.length / perPage.value) <= 0 ? 1 : Math.ceil(data.value.length / perPage.value);
 })
 
 const onNextPage = () => {
