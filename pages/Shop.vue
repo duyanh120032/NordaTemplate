@@ -296,8 +296,14 @@ const onChangePage = (n) => {
 
 <style scoped>
 .shop {
-
     margin-top: 150px;
     min-height: 100vh;
+    @media screen and (max-width: 991px) {
+        margin-top: 100px;
+    }
+    @media screen and (max-width: 767px) {
+        margin-top: 50px;
+    }
+               
 }
 </style>

@@ -40,8 +40,3 @@ const cartStore = useCartStore()
         </div>
     </div>
 </template>
-
-
-
-<style scoped>
-</style>

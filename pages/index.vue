@@ -2,9 +2,6 @@
 
 const client = useSupabaseClient()
 const { data: sliderProduct } = await client.from<Product>('Product').select('*').range(0, 3)
-
-
-
 </script>
 <template>
     <div class="home">

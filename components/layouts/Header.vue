@@ -14,7 +14,7 @@ const handleSearch = () => {
     if (searchKey.value.length > 0) {
         navigateTo('/shop?q=' + searchKey.value)
     }
-    console.log(searchKey.value)
+    
 }
 const isOpenMobileSidebar = useState('false', () => false);
 const { getCount, getCountWishlist } = storeToRefs(useCartStore())

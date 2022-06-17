@@ -25,9 +25,7 @@ const { totalPages } = defineProps({
         type: Number
     }
 })
-// const totalPages = computed(() => {
-//     return Math.ceil(numOfProducts / perPage) <= 0 ? 1 : Math.ceil(numOfProducts / perPage);
-// })
+
 </script>
 
 <template>

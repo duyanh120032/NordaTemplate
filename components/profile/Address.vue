@@ -6,10 +6,6 @@ const { user } = defineProps({
     }
 })
 const {user_metadata:userData} =user
-
-
-
-
 </script>
 <template>
     <div>

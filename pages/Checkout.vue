@@ -83,8 +83,6 @@ watchEffect(() => {
         shippingData.Email = user.value.email;
         shippingData.FirstName = user.value.user_metadata.firstname === undefined ? '' : user.value.user_metadata.firstname;
         shippingData.LastName = user.value.user_metadata.lastname === undefined ? '' : user.value.user_metadata.lastname;
-        // shippingData.Phone = user.value.user_metadata.phone;
-        // shippingData.Address = user.value.user_metadata.address;
     }
 });
 
@@ -100,9 +98,6 @@ const grandTotal = computed(() => {
     if (discount.value > 0) {
         _total = _total - _total * discount.value / 100;
     }
-    // if (shippingCost.value === 'Free') {
-    //     return _total;
-    // }
     return _total + shippingCost.value;
 })
 const isChecked = computed(() => {

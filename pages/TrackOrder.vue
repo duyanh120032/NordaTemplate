@@ -36,10 +36,7 @@ const orderDetail = reactive({
 const viewOrder = async (id: string | number) => {
     orderDetail.loading = true
     orderDetail.error = null
-    console.log(id)
     const { data } = await client.from<Order>('Orders').select('*').eq('id', id).single()
-
-
     data.items = await Promise.all(data.items.map(async (item) => {
         const { data: product } = await client.from<ProductDetail>('Product').select('*').eq('id', item.id).single()
         if (product.title) {
@@ -130,8 +127,3 @@ watchEffect(async () => {
         </div>
     </div>
 </template>
-
-
-
-<style scoped>
-</style>

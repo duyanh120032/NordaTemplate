@@ -14,7 +14,6 @@ export const useCartStore = defineStore("cart", {
   state: () => {
     return initialState;
   },
-
   actions: {
     addToCart(product: CartItem) {
       const index = this.items.findIndex((item) => {

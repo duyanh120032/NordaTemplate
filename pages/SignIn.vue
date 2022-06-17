@@ -1,14 +1,5 @@
 <script setup lang="ts">
-import { tryOnBeforeMount } from "@vueuse/shared";
 import { useToast } from "vue-toastification";
-
-// tryOnBeforeMount(() => {
-//     const router = useRouter();
-//     const user = useSupabaseUser();
-//     if (user.value) {
-//         router.push("/profile");
-//     }
-// });
 definePageMeta({
     middleware: ['signin']
 })
@@ -36,8 +27,8 @@ const handleRegister = async () => {
     isPending.value = true;
     if (newUser.password !== newUser.confirmPassword) {
         newUser.error = 'Passwords do not match';
-        return;
         isPending.value = false;
+        return;
     }
     newUser.error = '';
     const data = await client.auth.signUp({ email: newUser.email, password: newUser.password });
@@ -172,7 +163,5 @@ const handleSendLinkReset = async () => {
         </div>
     </div>
 </template>
-<style scoped>
-.loading {}
-</style>
+
 

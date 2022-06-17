@@ -114,8 +114,3 @@ const {data:orders} = await client.from('Orders').select('*').eq('user_email', u
         </div>
     </div>
 </template>
-
-
-
-<style scoped>
-</style>

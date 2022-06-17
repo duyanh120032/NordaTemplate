@@ -13,10 +13,8 @@ onClickOutside(mobileSidebar, () => {
     emits('close')
 })
 const handleSubmit = () => {
-
     if (searchKeyword.value.length > 0) {
-        emits('close')
-        
+        emits('close')     
         navigateTo('/shop?q=' + searchKeyword.value)
     }
 }
